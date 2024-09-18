@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         payment_method_types: ['card'],
         line_items: [{
           price_data: {
-            currency: 'usd',
+            currency: 'eur',
             product_data: {
               name: `Generar itinerario para ${ciudad} por ${dias} días`,
             },

@@ -106,68 +106,146 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-      <h1 className="fs-1 d-flex align-items-center" style={{marginBottom: '2rem'}}>
-        Generador de Itinerarios
-        <i className="bi bi-luggage ms-2"></i>
-      </h1>
-
-
-      {itinerario && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2 style={{marginBottom: '2rem'}}>Itinerario Sugerido para {ciudad} ({dias} días):</h2>
-          <ReactMarkdown className="markdown-content" style={{ whiteSpace: 'pre-wrap', padding: '1rem', backgroundColor: '#f0f0f0' }}>
-          {itinerario}
-          </ReactMarkdown>
-        </div>
-      )}
-
-      {generando ? (
-        <div>
-          <p>Generando itinerario para {ciudad} durante {dias} días...</p>
-          {loading && <p>Por favor, espere...</p>}
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <label htmlFor="ciudad" className="fs-3">Ciudad:</label>
-            <input
-              type="text"
-              id="ciudad"
-              value={ciudad}
-              onChange={(e) => setCiudad(e.target.value)}
-              required
-              style={{ 
-                width: '100%', padding: '0.5rem', marginTop: '0.5rem', 
-                border: '2px solid black', borderRadius: '5px',
-                fontFamily: 'Times New Roman', fontSize: '1.2rem' 
-              }}
-            />
+    <div className="container-fluid p-0">
+      <header className="bg-primary text-white text-center py-5">
+        <h1 className="display-4 mb-3">✈️ TuItinerarioMágico</h1>
+        <p className="lead mb-4">¡Planifica tu viaje perfecto en segundos! 🌟</p>
+        
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-md-8 col-lg-6">
+              <div className="card border-0 shadow">
+                <div className="card-body p-4">
+                  <h2 className="card-title text-primary mb-4">¡Crea tu itinerario ahora! 🚀</h2>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                      <label htmlFor="ciudad" className="form-label">¿A dónde quieres ir? 🌆</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
+                        <input
+                          type="text"
+                          className="form-control form-control-lg"
+                          id="ciudad"
+                          value={ciudad}
+                          onChange={(e) => setCiudad(e.target.value)}
+                          required
+                          placeholder="Ej: París, Roma, Tokio..."
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="dias" className="form-label">¿Cuántos días te quedas? 📅</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
+                        <input
+                          type="number"
+                          className="form-control form-control-lg"
+                          id="dias"
+                          value={dias}
+                          onChange={(e) => setDias(e.target.value)}
+                          required
+                          min="1"
+                          max="30"
+                          placeholder="Ej: 3, 5, 7..."
+                        />
+                      </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary btn-lg w-100">
+                      {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </header>
 
-          <div style={{ marginBottom: '1rem' }}>
-            <label htmlFor="dias" className="fs-3">Días de estancia:</label>
-            <input
-              type="number"
-              id="dias"
-              value={dias}
-              onChange={(e) => setDias(e.target.value)}
-              required
-              style={{ 
-                width: '100%', padding: '0.5rem', marginTop: '0.5rem', 
-                border: '2px solid black', borderRadius: '5px' 
-              }}
-            />
+      <main className="py-5">
+        <section className="container mb-5">
+          <h2 className="text-center mb-4">¿Cómo funciona? 🤔</h2>
+          <div className="row g-4 justify-content-center">
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-1-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Elige tu destino</h3>
+                  <p className="card-text">Ingresa la ciudad que quieres visitar.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-2-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Define la duración</h3>
+                  <p className="card-text">Indica cuántos días durará tu viaje.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-3-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Recibe tu itinerario</h3>
+                  <p className="card-text">¡Obtén un plan personalizado al instante!</p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <button type="submit" className="btn btn-dark" style={{ padding: '0.75rem 1.5rem' }}>
-            {loading ? 'Generando...' : 'Pagar y Generar Itinerario (1€)'}
-          </button>
-        </form>
-      )}
+        <section className="container mb-5">
+          <h2 className="text-center mb-4">¿Por qué usar TuItinerarioMágico? 💡</h2>
+          <div className="row g-4">
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-clock fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Ahorra tiempo ⏱️</h3>
+                  <p className="card-text">Obtén un itinerario completo en minutos, no en horas.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-geo-alt fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Descubre lo mejor 🗺️</h3>
+                  <p className="card-text">Explora los lugares más increíbles de cada ciudad.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-person-check fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Personalizado para ti 👤</h3>
+                  <p className="card-text">Itinerarios adaptados a la duración de tu viaje.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
+        {error && <p className="alert alert-danger mt-3">{error}</p>}
 
+        {itinerario && (
+          <section className="container mt-5">
+            <h2 className="text-center mb-4">¡Tu aventura está lista! 🎉</h2>
+            <div className="bg-white p-4 rounded-3 shadow">
+              <h3>Itinerario para {ciudad} ({dias} días):</h3>
+              <ReactMarkdown className="markdown-content">
+                {itinerario}
+              </ReactMarkdown>
+            </div>
+          </section>
+        )}
+      </main>
+
+      <footer className="bg-dark text-white text-center py-3 mt-5">
+        <p className="mb-0">© 2023 TuItinerarioMágico - Haz tus sueños de viaje realidad 💖</p>
+      </footer>
     </div>
   );
 }
