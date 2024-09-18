@@ -16,6 +16,8 @@ function CheckoutForm() {
       return;
     }
 
+    console.log('Iniciando proceso de pago...');
+
     // Solicita el clientSecret del backend
     const response = await fetch('/api/create-checkout-session', {
       method: 'POST',
@@ -25,6 +27,7 @@ function CheckoutForm() {
       body: JSON.stringify({ amount: 100 }), // En centavos
     });
     const { clientSecret } = await response.json();
+    console.log('ClientSecret recibido:', clientSecret);
 
     // Realiza el pago con el clientSecret
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
@@ -34,9 +37,9 @@ function CheckoutForm() {
     });
 
     if (error) {
-      console.log('[error]', error);
+      console.log('Error en el pago:', error);
     } else {
-      console.log('[PaymentIntent]', paymentIntent);
+      console.log('Pago exitoso. PaymentIntent:', paymentIntent);
       // Confirmar el éxito del pago
     }
   };

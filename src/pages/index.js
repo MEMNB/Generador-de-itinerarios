@@ -16,24 +16,52 @@ export default function Home() {
   const [sessionId, setSessionId] = useState('');
   const [generando, setGenerando] = useState(false);
 
+  const generateItinerary = useCallback(async (cityParam, daysParam) => {
+    console.log('Generando itinerario para:', cityParam || ciudad, 'durante', daysParam || dias, 'días');
+    setLoading(true);
+    try {
+      const response = await fetch('/api/itinerario', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ciudad: cityParam || ciudad, dias: daysParam || dias }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Itinerario generado exitosamente');
+        setItinerario(data.itinerario);
+        setGenerando(false);
+      } else {
+        console.error('Error al generar el itinerario:', data.error);
+        setError(data.error || 'Error al generar el itinerario');
+      }
+    } catch (err) {
+      console.error('Error al conectar con el servidor:', err);
+      setError('Error al conectar con el servidor');
+    } finally {
+      setLoading(false);
+    }
+  }, [ciudad, dias]);
+
   useEffect(() => {
     if (router.isReady) {
       const { success, city, days } = router.query;
+      console.log('Parámetros de URL:', { success, city, days });
       if (success === 'true' && city && days) {
         setCiudad(city);
         setDias(days);
         setGenerando(true);
+        console.log('Iniciando generación de itinerario para:', city, 'durante', days, 'días');
         generateItinerary(city, days);
       }
     }
-  }, [router.isReady, router.query]);
-
-  useEffect(() => {
-    generateItinerary();
-  }, [generateItinerary]); 
+  }, [router.isReady, router.query, generateItinerary]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Iniciando proceso de pago para:', ciudad, 'durante', dias, 'días');
     setLoading(true);
     setError('');
     setItinerario('');
@@ -49,6 +77,7 @@ export default function Home() {
       });
 
       const session = await response.json();
+      console.log('Sesión de Stripe creada:', session.id);
       
       if (response.ok) {
         setSessionId(session.id);
@@ -60,34 +89,11 @@ export default function Home() {
           setError(result.error.message);
         }
       } else {
+        console.error('Error en la respuesta del servidor:', session.error);
         setError(session.error || 'Error al procesar el pago');
       }
     } catch (err) {
-      setError('Error al conectar con el servidor');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const generateItinerary = async (cityParam, daysParam) => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/itinerario', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ciudad: cityParam || ciudad, dias: daysParam || dias, sessionId }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setItinerario(data.itinerario);
-        setGenerando(false);
-      } else {
-        setError(data.error || 'Error al generar el itinerario');
-      }
-    } catch (err) {
+      console.error('Error al conectar con el servidor:', err);
       setError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
