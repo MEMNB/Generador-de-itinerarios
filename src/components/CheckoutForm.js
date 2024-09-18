@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Carga la clave pública de Stripe
-const stripePromise = loadStripe('pk_test_51Pzx0wGxkNlvRGbbzUdwHgvc4Y58iv4u1BV6L3WLvujHwllqOlQIBBwGeiMEKCmLYaXvzFgF5XU8rxbBVtTqx01I00vpbX12c0');
+const stripePromise = loadStripe('process.env.STRIPE_PUBLIC_KEY');
 
 function CheckoutForm() {
   const stripe = useStripe();

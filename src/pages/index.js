@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51Pzx0wGxkNlvRGbbzUdwHgvc4Y58iv4u1BV6L3WLvujHwllqOlQIBBwGeiMEKCmLYaXvzFgF5XU8rxbBVtTqx01I00vpbX12c0');
+const stripePromise = loadStripe('process.env.STRIPE_PUBLIC_KEY');
 
 export default function Home() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe('sk_test_51Pzx0wGxkNlvRGbb5UB9mnoNktjRii9LUt2db5QohTaK08yIvcftrOnAkdHeWqYw6hdWHeHIflmaaW2jVUAfcRy200CaqjeT3p', { apiVersion: '2022-08-01' });
+const stripe = new Stripe('process.env.STRIPE_SECRET_KEY', { apiVersion: '2022-08-01' });
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
