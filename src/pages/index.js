@@ -75,7 +75,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ciudad, dias }),
+        body: JSON.stringify({ ciudad, dias, redirect_url: document.location.href }),
       });
 
       const session = await response.json();

@@ -5,7 +5,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-08-
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      const { ciudad, dias } = req.body;
+      const { ciudad, dias, redirect_url } = req.body;
 
       // Puedes ajustar el monto según sea necesario
       const amount = 100; // En centavos, por ejemplo, $10.00
@@ -23,8 +23,8 @@ export default async function handler(req, res) {
           quantity: 1,
         }],
         mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_URL}/?success=true&city=${ciudad}&days=${dias}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_URL}/?canceled=true`,
+        success_url: `${redirect_url}?success=true&city=${ciudad}&days=${dias}`,
+        cancel_url: `${redirect_url}?canceled=true`,
       });
 
       res.status(200).json({ id: session.id });
