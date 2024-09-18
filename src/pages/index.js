@@ -17,6 +17,7 @@ export default function Home() {
   const [generando, setGenerando] = useState(false);
 
   const generateItinerary = useCallback(async (cityParam, daysParam) => {
+    console.log('Llamada a generateItinerary:', { cityParam, daysParam });
     console.log('Generando itinerario para:', cityParam || ciudad, 'durante', daysParam || dias, 'días');
     setLoading(true);
     try {
@@ -25,7 +26,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ciudad: cityParam || ciudad, dias: daysParam || dias }),
+        body: JSON.stringify({ ciudad: cityParam, dias: daysParam }),
       });
 
       const data = await response.json();
@@ -43,7 +44,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [ciudad, dias]);
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -55,9 +56,11 @@ export default function Home() {
         setGenerando(true);
         console.log('Iniciando generación de itinerario para:', city, 'durante', days, 'días');
         generateItinerary(city, days);
+        // Eliminar los parámetros de consulta de la URL
+        router.replace('/', undefined, { shallow: true });
       }
     }
-  }, [router.isReady, router.query, generateItinerary]);
+  }, [router.isReady, router.query]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,6 +112,16 @@ export default function Home() {
         <i className="bi bi-luggage ms-2"></i>
       </h1>
 
+
+      {itinerario && (
+        <div style={{ marginTop: '2rem' }}>
+          <h2 style={{marginBottom: '2rem'}}>Itinerario Sugerido para {ciudad} ({dias} días):</h2>
+          <ReactMarkdown className="markdown-content" style={{ whiteSpace: 'pre-wrap', padding: '1rem', backgroundColor: '#f0f0f0' }}>
+          {itinerario}
+          </ReactMarkdown>
+        </div>
+      )}
+
       {generando ? (
         <div>
           <p>Generando itinerario para {ciudad} durante {dias} días...</p>
@@ -155,14 +168,6 @@ export default function Home() {
 
       {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
 
-      {itinerario && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2>Itinerario Sugerido para {ciudad} ({dias} días):</h2>
-          <ReactMarkdown style={{ whiteSpace: 'pre-wrap', padding: '1rem', backgroundColor: '#f0f0f0' }}>
-            {itinerario}
-          </ReactMarkdown>
-        </div>
-      )}
     </div>
   );
 }
