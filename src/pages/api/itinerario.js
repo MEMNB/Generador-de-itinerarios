@@ -4,16 +4,18 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
+  if (!stripe) return res.status(500).json({ error: 'Stripe no está inicializado' });
+  
   if (req.method === 'POST') {
-    const { ciudad, dias, sessionId } = req.body;
+    const { ciudad, dias } = req.body;
 
 
     try {
 
-      // const session = await stripe.checkout.sessions.retrieve(sessionId);
-      // if (session.payment_status !== 'paid') {
-      //   return res.status(400).json({ error: 'El pago no ha sido completado' });
-      // }
+       const session = await stripe.checkout.sessions.retrieve(sessionId);
+       if (session.payment_status !== 'paid') {
+         return res.status(400).json({ error: 'El pago no ha sido completado' });
+        }
 
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
@@ -22,7 +24,7 @@ export default async function handler(req, res) {
           "messages": [
             {
               role: "system",
-              content: "Eres un creador de itinerarios y con la ciudad y el numero de días que recibas debes crear un itinerario adecuado a esos días"
+              content: "Eres un creador de itinerarios y con la ciudad y el numero de días que recibas debes crear un itinerario adecuado a esos días. Cuando proporciones itinerarios o listas de actividades, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc."
             },
             {
               role: "user",

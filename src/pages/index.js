@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('process.env.STRIPE_PUBLIC_KEY');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function Home() {
   const router = useRouter();
@@ -27,6 +27,10 @@ export default function Home() {
       }
     }
   }, [router.isReady, router.query]);
+
+  useEffect(() => {
+    generateItinerary();
+  }, [generateItinerary]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

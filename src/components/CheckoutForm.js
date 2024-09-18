@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Carga la clave pública de Stripe
-const stripePromise = loadStripe('process.env.STRIPE_PUBLIC_KEY');
+const stripePromise = loadStripe('process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY');
 
 function CheckoutForm() {
   const stripe = useStripe();
@@ -17,7 +17,7 @@ function CheckoutForm() {
     }
 
     // Solicita el clientSecret del backend
-    const response = await fetch('/api/create-payment-intent', {
+    const response = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
