@@ -107,9 +107,9 @@ export default function Home() {
 
   return (
     <div className="container-fluid p-0">
-      <header className="bg-primary text-white text-center py-5">
-        <h1 className="display-4 mb-3">✈️ TuItinerarioMágico</h1>
-        <p className="lead mb-4">¡Planifica tu viaje perfecto en segundos! 🌟</p>
+      <header className="bg-warning bg-gradient text-white text-center py-5">
+        <h1 className="display-4 mb-3">🗺️ Generador de itinerarios</h1>
+        <p className="lead mb-4 font-weight-bold">¡Planifica tu viaje perfecto en segundos! 🌟</p>
         
         <div className="container">
           <div className="row justify-content-center">
@@ -150,7 +150,7 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-lg w-100">
+                    <button type="submit" className="btn btn-dark btn-lg w-100">
                       {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
                     </button>
                   </form>
@@ -195,38 +195,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="container mb-5">
-          <h2 className="text-center mb-4">¿Por qué usar TuItinerarioMágico? 💡</h2>
-          <div className="row g-4">
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-clock fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Ahorra tiempo ⏱️</h3>
-                  <p className="card-text">Obtén un itinerario completo en minutos, no en horas.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-geo-alt fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Descubre lo mejor 🗺️</h3>
-                  <p className="card-text">Explora los lugares más increíbles de cada ciudad.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-person-check fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Personalizado para ti 👤</h3>
-                  <p className="card-text">Itinerarios adaptados a la duración de tu viaje.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {error && <p className="alert alert-danger mt-3">{error}</p>}
 
@@ -244,7 +212,7 @@ export default function Home() {
       </main>
 
       <footer className="bg-dark text-white text-center py-3 mt-5">
-        <p className="mb-0">© 2023 TuItinerarioMágico - Haz tus sueños de viaje realidad 💖</p>
+        <p className="mb-0">© 2024 Generador de itinerarios - Haz tus sueños de viaje realidad 💖</p>
       </footer>
     </div>
   );
