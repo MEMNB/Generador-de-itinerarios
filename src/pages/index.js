@@ -67,7 +67,9 @@ export default function Home() {
     setItinerario('');
 
     try {
+      console.log("init");
       const stripe = await stripePromise;
+      console.log("pasa");
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
