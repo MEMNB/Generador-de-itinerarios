@@ -107,11 +107,58 @@ export default function Home() {
 
   return (
     <div className="container-fluid p-0">
-      <header className="bg-warning bg-gradient text-white text-center py-5">
+      <header className="bg-warning bg-gradient text-white text-center py-4">
         <h1 className="display-4 mb-3">🗺️ Generador de itinerarios</h1>
-        <p className="lead mb-4 font-weight-bold">¡Planifica tu viaje perfecto en segundos! 🌟</p>
-        
-        <div className="container">
+        <p className="lead mb-2 font-weight-bold">¡Planifica tu viaje perfecto en segundos!</p>
+      </header>
+
+      <main className="py-5">
+        {error && <p className="alert alert-danger mt-3">{error}</p>}
+
+        {itinerario && (
+          <section className="container mt-5 mb-5">
+            <div className="bg-white p-4 rounded-3 shadow">
+              <ReactMarkdown className="markdown-content">
+                {itinerario}
+              </ReactMarkdown>
+            </div>
+          </section>
+        )}
+
+        <section className="container mb-5">
+          <h2 className="text-center mb-4">¿Cómo funciona? 🤔</h2>
+          <div className="row g-4 justify-content-center">
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-1-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Elige tu destino</h3>
+                  <p className="card-text">Ingresa la ciudad que quieres visitar.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-2-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Define la duración</h3>
+                  <p className="card-text">Indica cuántos días durará tu viaje.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body text-center">
+                  <i className="bi bi-3-circle fs-1 text-primary mb-3"></i>
+                  <h3 className="card-title h5">Recibe tu itinerario</h3>
+                  <p className="card-text">¡Obtén un plan personalizado al instante!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="container">
           <div className="row justify-content-center">
             <div className="col-md-8 col-lg-6">
               <div className="card border-0 shadow">
@@ -158,57 +205,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-      </header>
-
-      <main className="py-5">
-        <section className="container mb-5">
-          <h2 className="text-center mb-4">¿Cómo funciona? 🤔</h2>
-          <div className="row g-4 justify-content-center">
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-1-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Elige tu destino</h3>
-                  <p className="card-text">Ingresa la ciudad que quieres visitar.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-2-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Define la duración</h3>
-                  <p className="card-text">Indica cuántos días durará tu viaje.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-3-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Recibe tu itinerario</h3>
-                  <p className="card-text">¡Obtén un plan personalizado al instante!</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </section>
-
-
-        {error && <p className="alert alert-danger mt-3">{error}</p>}
-
-        {itinerario && (
-          <section className="container mt-5">
-            <h2 className="text-center mb-4">¡Tu aventura está lista! 🎉</h2>
-            <div className="bg-white p-4 rounded-3 shadow">
-              <h3>Itinerario para {ciudad} ({dias} días):</h3>
-              <ReactMarkdown className="markdown-content">
-                {itinerario}
-              </ReactMarkdown>
-            </div>
-          </section>
-        )}
       </main>
 
       <footer className="bg-dark text-white text-center py-3 mt-5">
