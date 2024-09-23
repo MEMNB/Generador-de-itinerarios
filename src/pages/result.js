@@ -43,7 +43,7 @@ export default function Result() {
     <div className="container">
       
       {cargando ? (
-        <p className="alert alert-info mt-3">Cargando... Espera un momento</p> // Mensaje de carga
+        <p className="alert alert-danger mt-3 text-center fs-4 fw-bold">Cargando... Espera un momento</p> // Mensaje de carga
       ) : itinerario ? (
         <div className="bg-white p-4 rounded-3 shadow-custom">
           <ReactMarkdown className="markdown-content">
@@ -53,9 +53,13 @@ export default function Result() {
       ) : (
         <p className="alert alert-danger mt-3">{error}</p>
       )}
-      <button onClick={() => router.push('/')} className="btn btn-warning mt-3">
+
+      <div className="d-flex justify-content-center">
+      <button onClick={() => router.push('/')} className="btn btn-warning fw-bold mt-2 mb-3 btn-lg shadow-sm rounded-pill">
         Hacer otro itinerario
       </button>
+      </div>
+
     </div>
   );
 }
