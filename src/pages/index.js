@@ -52,7 +52,7 @@ export default function Home() {
     if (router.isReady) {
       const { success, city, days } = router.query;
       console.log('Parámetros de URL:', { success, city, days });
-      if (success === 'true' && city && days) {
+      if (success === 'true' && city && days && !generando) { // Añadir !generando para evitar llamadas múltiples
         setCiudad(city);
         setDias(days);
         setGenerando(true);
@@ -62,7 +62,7 @@ export default function Home() {
         router.replace('/', undefined, { shallow: true });
       }
     }
-  }, [router.isReady, router.query]);
+  }, [router.isReady, router.query, generando]); // Añadir generando como dependencia
 
   const handleSubmit = async (e) => {
     e.preventDefault();
