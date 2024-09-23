@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           quantity: 1,
         }],
         mode: 'payment',
-        success_url: `${redirect_url}?success=true&city=${ciudad}&days=${dias}`,
+        success_url: `${redirect_url}/result/?success=true&city=${ciudad}&days=${dias}`,
         cancel_url: `${redirect_url}?canceled=true`,
       });
 

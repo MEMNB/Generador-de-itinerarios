@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { loadStripe } from '@stripe/stripe-js';
+import Head from 'next/head';
+import Image from 'next/image';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -92,6 +94,12 @@ export default function Home() {
 
         if (result.error) {
           setError(result.error.message);
+        } else {
+          // Redirigir a result.js con los parámetros necesarios
+          router.push({
+            pathname: '/result',
+            query: { city: ciudad, days: dias }
+          });
         }
       } else {
         console.error('Error en la respuesta del servidor:', session.error);
@@ -106,111 +114,134 @@ export default function Home() {
   };
 
   return (
-    <div className="container-fluid p-0">
-      <header className="bg-warning bg-gradient text-white text-center py-4">
-        <h1 className="display-4 mb-3">🗺️ Generador de itinerarios</h1>
-        <p className="lead mb-2 font-weight-bold">¡Planifica tu viaje perfecto en segundos!</p>
-      </header>
+    <>
+      <Head>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+      </Head>
+      <div className="container-fluid p-0">
+        <header className="bg-warning bg-gradient text-white py-4 mb-4">
+          <h1 className="mb-3 text-center travel-plan-title">🗺️ TravelPlan</h1>
+        </header>
 
-      <main className="py-5">
-        {error && <p className="alert alert-danger mt-3">{error}</p>}
+        <main className="py-3">
+          {itinerario && (
+            <section className="container mb-5">
+              <div className="bg-white p-4 rounded-3 shadow-custom">
+                <ReactMarkdown className="markdown-content">
+                  {itinerario}
+                </ReactMarkdown>
+              </div>
+            </section>
+          )}
 
-        {itinerario && (
-          <section className="container mt-5 mb-5">
-            <div className="bg-white p-4 rounded-3 shadow">
-              <ReactMarkdown className="markdown-content">
-                {itinerario}
-              </ReactMarkdown>
+          <section className="container">
+            <div className="row">
+              <div className="col-md-6 mb-4 mb-md-0">
+                <Image 
+                  src="/images/tu-imagen.jpg" 
+                  alt="Descripción de la imagen" 
+                  width={500} 
+                  height={300} 
+                  layout="responsive" 
+                  className="rounded shadow-custom" 
+                />
+              </div>
+              <div className="col-md-6">
+                <div className="card border-warning border-3 shadow-custom">
+                  <div className="card-body p-4">
+                    <h2 className="card-title text-dark text-center mb-4">¡Crea tu itinerario ahora! 🚀</h2>
+                    <form onSubmit={handleSubmit}>
+                      <div className="mb-3">
+                        <label htmlFor="ciudad" className="form-label">¿A dónde quieres ir? 🌆</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
+                          <input
+                            type="text"
+                            className="form-control form-control-lg"
+                            id="ciudad"
+                            value={ciudad}
+                            onChange={(e) => setCiudad(e.target.value)}
+                            required
+                            placeholder="Ej: París, Roma, Tokio..."
+                          />
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="dias" className="form-label">¿Cuántos días te quedas? 📅</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
+                          <input
+                            type="number"
+                            className="form-control form-control-lg"
+                            id="dias"
+                            value={dias}
+                            onChange={(e) => setDias(e.target.value)}
+                            required
+                            min="1"
+                            max="30"
+                            placeholder="Ej: 3, 5, 7..."
+                          />
+                        </div>
+                      </div>
+                      <button type="submit" className="btn btn-generate btn-lg w-100">
+                        {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
-        )}
 
-        <section className="container mb-5">
-          <h2 className="text-center mb-4">¿Cómo funciona? 🤔</h2>
-          <div className="row g-4 justify-content-center">
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-1-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Elige tu destino</h3>
-                  <p className="card-text">Ingresa la ciudad que quieres visitar.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-2-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Define la duración</h3>
-                  <p className="card-text">Indica cuántos días durará tu viaje.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className="bi bi-3-circle fs-1 text-primary mb-3"></i>
-                  <h3 className="card-title h5">Recibe tu itinerario</h3>
-                  <p className="card-text">¡Obtén un plan personalizado al instante!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          {error && <p className="alert alert-danger mt-3">{error}</p>}
+        </main>
+      </div>
 
-        <section className="container">
-          <div className="row justify-content-center">
-            <div className="col-md-8 col-lg-6">
-              <div className="card border-0 shadow">
-                <div className="card-body p-4">
-                  <h2 className="card-title text-primary mb-4">¡Crea tu itinerario ahora! 🚀</h2>
-                  <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                      <label htmlFor="ciudad" className="form-label">¿A dónde quieres ir? 🌆</label>
-                      <div className="input-group">
-                        <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                        <input
-                          type="text"
-                          className="form-control form-control-lg"
-                          id="ciudad"
-                          value={ciudad}
-                          onChange={(e) => setCiudad(e.target.value)}
-                          required
-                          placeholder="Ej: París, Roma, Tokio..."
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="dias" className="form-label">¿Cuántos días te quedas? 📅</label>
-                      <div className="input-group">
-                        <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
-                        <input
-                          type="number"
-                          className="form-control form-control-lg"
-                          id="dias"
-                          value={dias}
-                          onChange={(e) => setDias(e.target.value)}
-                          required
-                          min="1"
-                          max="30"
-                          placeholder="Ej: 3, 5, 7..."
-                        />
-                      </div>
-                    </div>
-                    <button type="submit" className="btn btn-dark btn-lg w-100">
-                      {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+      <style jsx>{`
+        .travel-plan-title {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 700;
+          font-size: 3.5rem;
+          color: #333;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+          letter-spacing: 1px;
+        }
+        
+        :global(.shadow-custom) {
+          box-shadow: 0 0.5rem 1rem rgba(255, 193, 7, 0.3) !important;
+        }
 
-      <footer className="bg-dark text-white text-center py-3 mt-5">
-        <p className="mb-0">© 2024 Generador de itinerarios - Haz tus sueños de viaje realidad 💖</p>
-      </footer>
-    </div>
+        :global(.img-fluid) {
+          max-height: 100%;
+          object-fit: cover;
+        }
+
+        :global(.btn-generate) {
+          background-color: #343a40;
+          border-color: #343a40;
+          color: white !important;
+          font-weight: bold;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        :global(.btn-generate:hover) {
+          background-color: #23272b;
+          border-color: #1d2124;
+          color: white !important;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        :global(.btn-generate:focus, .btn-generate:active) {
+          color: white !important;
+          box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5), 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        :global(.markdown-content) {
+          line-height: 1.6;
+        }
+      `}</style>
+    </>
   );
 }
