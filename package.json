@@ -11,12 +11,15 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.5.0",
+    "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
     "mongodb": "^6.9.0",
     "next": "^14.2.12",
-    "openai": "^4.61.1",
+    "openai": "^4.63.0",
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
@@ -30,6 +33,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
     "postcss": "^8",
+    "supabase": "^1.200.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

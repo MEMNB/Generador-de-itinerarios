@@ -14,17 +14,17 @@ export default function Result() {
       const generateItinerary = async () => {
         setCargando(true); // Inicia la carga
         try {
-          const response = await fetch('/api/itinerario', {
+          const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ciudad: city, dias: days }),
+            body: JSON.stringify({ city, days }),
           });
 
           const data = await response.json();
           if (response.ok) {
-            setItinerario(data.itinerario);
+            setItinerario(data.result);
           } else {
             setError(data.error || 'Error al generar el itinerario');
           }

@@ -118,9 +118,9 @@ export default function Home() {
       <Head>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
       </Head>
-      <div className="container-fluid p-0">
-        <header className="bg-warning bg-gradient text-white py-4 mb-4">
-          <h1 className="mb-3 text-center travel-plan-title">🗺️ TravelPlan</h1>
+      <div className="container-fluid p-0 main-container">
+        <header className="custom-header">
+          <h1 className="travel-plan-title">🗺️ TravelPlan</h1>
         </header>
 
         <main className="py-3">
@@ -142,12 +142,13 @@ export default function Home() {
                   alt="Descripción de la imagen" 
                   width={500} 
                   height={300} 
-                  layout="responsive" 
+                  layout="layout" 
+                  //objectFit="cover"
                   className="rounded shadow-custom" 
                 />
               </div>
               <div className="col-md-6">
-                <div className="card border-warning border-3 shadow-custom">
+                <div /*className="card border-warning border-3 shadow-custom"*/>
                   <div className="card-body p-4">
                     <h2 className="card-title text-dark text-center mb-4">¡Crea tu itinerario ahora! 🚀</h2>
                     <form onSubmit={handleSubmit}>
@@ -197,16 +198,31 @@ export default function Home() {
         </main>
       </div>
 
-      <style jsx>{`
-        .travel-plan-title {
+      <style jsx global>{`
+        body {
+          background-color: #cce5ff; /* Un tono de azul un poco más fuerte */
+          margin: 0;
           font-family: 'Poppins', sans-serif;
-          font-weight: 700;
-          font-size: 3.5rem;
-          color: #333;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-          letter-spacing: 1px;
         }
-        
+
+        .main-container {
+          background-color: #cce5ff; /* El mismo tono de azul */
+          min-height: 100vh;
+        }
+
+        .custom-header {
+          background-color: #ffd700; /* Amarillo dorado */
+          padding: 2rem 0;
+          text-align: center;
+        }
+
+        .travel-plan-title {
+          font-size: 4rem;
+          color: #333333; /* Color de texto oscuro para contraste */
+          margin: 0;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         :global(.shadow-custom) {
           box-shadow: 0 0.5rem 1rem rgba(255, 193, 7, 0.3) !important;
         }

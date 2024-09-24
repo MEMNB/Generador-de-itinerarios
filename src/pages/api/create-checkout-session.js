@@ -7,6 +7,10 @@ export default async function handler(req, res) {
     try {
       const { ciudad, dias, redirect_url } = req.body;
 
+      // Codificar los parámetros de la URL
+      const encodedCiudad = encodeURIComponent(ciudad);
+      const encodedDias = encodeURIComponent(dias);
+
       // Puedes ajustar el monto según sea necesario
       const amount = 100; // En centavos, por ejemplo, $10.00
 
@@ -23,7 +27,7 @@ export default async function handler(req, res) {
           quantity: 1,
         }],
         mode: 'payment',
-        success_url: `${redirect_url}/result/?success=true&city=${ciudad}&days=${dias}`,
+        success_url: `${redirect_url}/result/?success=true&city=${encodedCiudad}&days=${encodedDias}`,
         cancel_url: `${redirect_url}?canceled=true`,
       });
 
