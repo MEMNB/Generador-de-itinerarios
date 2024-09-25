@@ -14,6 +14,7 @@ export default function Result() {
   const [loading, setLoading] = useState(false);
   const [city, setCity] = useState('');
   const [days, setDays] = useState('');
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const { id } = router.query;
@@ -28,7 +29,9 @@ export default function Result() {
             .eq('id', id)
             .single();
 
-          if (error) throw error;
+          if (error) {
+            setNotFound(true);
+          }
 
           if (data) {
             setCity(data.city);
@@ -135,6 +138,24 @@ export default function Result() {
       setLoading(false);
     }
   };
+
+  if (notFound) {
+    return (
+      <div className="container text-center mt-5">
+        <h1 className="display-1 text-primary">404</h1>
+        <h2 className="display-4 mb-4">¡Oops! Parece que te has perdido en el viaje</h2>
+        <p className="lead mb-4">
+          No hemos podido encontrar el itinerario que buscas. Pero no te preocupes, ¡hay muchos más destinos por explorar!
+        </p>
+        {/* <img src="/lost-traveler.svg" alt="Viajero perdido" className="img-fluid mb-4" style={{maxWidth: '300px'}} /> */}
+        <div>
+          <button onClick={() => router.push('/')} className="btn btn-primary btn-lg">
+            Volver a la página principal y planear una nueva aventura
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
