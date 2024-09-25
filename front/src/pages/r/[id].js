@@ -85,6 +85,22 @@ export default function Result() {
     }
   };
 
+  const shareItinerary = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Itinerario para ${city} - ${days} días`,
+          text: `¡Mira este increíble itinerario para ${city}!`,
+          url: window.location.href
+        });
+      } catch (error) {
+        console.error('Error al compartir:', error);
+      }
+    } else {
+      alert('Tu navegador no soporta la función de compartir. Intenta copiar el enlace manualmente.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -120,84 +136,84 @@ export default function Result() {
     }
   };
 
-  const downloadItinerary = () => {
-    const element = document.createElement("a");
-    const file = new Blob([itinerary], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = `Itinerario_${router.query.city}_${router.query.days}dias.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
-
   return (
     <div className="container">
       {loading ? (
-        <p className="alert alert-warning mt-3 text-center fs-4 fw-bold">Cargando... Espera un momento mientras se genera la magia</p>
+        <div className="text-center mt-5">
+          <div className="spinner-border text-primary" role="status" style={{width: '3rem', height: '3rem'}}>
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="mt-3 fs-4 fw-bold text-primary">¡Estamos creando tu itinerario personalizado!</p>
+          <p className="fs-5">Prepárate para descubrir experiencias únicas en {city}. Esto puede tomar unos momentos...</p>
+        </div>
       ) : itinerary ? (
         <div className="bg-white p-4 rounded-3 shadow-custom mb-5">
           <ReactMarkdown className="markdown-content">
             {itinerary}
           </ReactMarkdown>
           <button 
-            onClick={downloadItinerary} 
+            onClick={shareItinerary} 
             className="btn btn-generate btn-lg w-100"
           >
-            Descargar Itinerario 📥
+            Compartir Itinerario 📤
           </button>
         </div>
       ) : (
         <p className="alert alert-danger mt-3">{error}</p>
       )}
 
-      <div className="card shadow-custom mt-5">
-        <div className="card-body p-4">
-          <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otro itinerario? 🚀</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="city" className="form-label">¿A dónde quieres ir? 🌆</label>
-              <div className="input-group">
-                <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  required
-                  placeholder="Ej: París, Roma, Tokio..."
-                />
-              </div>
+      {!loading && (
+        <>
+          <div className="card shadow-custom mt-5">
+            <div className="card-body p-4">
+              <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otro itinerario? 🚀</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="city" className="form-label">¿A dónde quieres ir? 🌆</label>
+                  <div className="input-group">
+                    <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      id="city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      required
+                      placeholder="Ej: París, Roma, Tokio..."
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="days" className="form-label">¿Cuántos días te quedas? 📅</label>
+                  <div className="input-group">
+                    <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
+                    <input
+                      type="number"
+                      className="form-control form-control-lg"
+                      id="days"
+                      value={days}
+                      onChange={(e) => setDays(e.target.value)}
+                      required
+                      min="1"
+                      max="30"
+                      placeholder="Ej: 3, 5, 7..."
+                    />
+                  </div>
+                </div>
+                <button type="submit" className="btn btn-generate btn-lg w-100">
+                  {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
+                </button>
+              </form>
             </div>
-            <div className="mb-3">
-              <label htmlFor="days" className="form-label">¿Cuántos días te quedas? 📅</label>
-              <div className="input-group">
-                <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
-                <input
-                  type="number"
-                  className="form-control form-control-lg"
-                  id="days"
-                  value={days}
-                  onChange={(e) => setDays(e.target.value)}
-                  required
-                  min="1"
-                  max="30"
-                  placeholder="Ej: 3, 5, 7..."
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn btn-generate btn-lg w-100">
-              {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
-            </button>
-          </form>
-        </div>
-      </div>
+          </div>
 
-      <div className="d-flex justify-content-center mt-3">
-        <button onClick={() => router.push('/')} className="btn btn-warning fw-bold mt-2 mb-3 btn-lg shadow-sm rounded-pill">
-          Volver a la página principal
-        </button>
-      </div>
+          <div className="d-flex justify-content-center mt-3">
+            <button onClick={() => router.push('/')} className="btn btn-warning fw-bold mt-2 mb-3 btn-lg shadow-sm rounded-pill">
+              Volver a la página principal
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
