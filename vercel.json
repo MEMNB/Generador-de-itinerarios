@@ -1,13 +1,13 @@
 {
     "functions": {
-      "api/supabase/functions/**/*.ts": {
+      "supabase/functions/**/*.ts": {
         "runtime": "vercel-deno@0.2.0"
       }
     },
     "routes": [
       {
-        "src": "/api/supabase/functions/(.*)",
-        "dest": "/api/supabase/functions/$1"
+        "src": "/supabase/functions/(.*)",
+        "dest": "/supabase/functions/$1"
       }
     ]
   }
