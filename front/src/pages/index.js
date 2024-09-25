@@ -74,6 +74,7 @@ export default function Home() {
 
     try {
       console.log("init");
+
       const stripe = await stripePromise;
       console.log("pasa");
       const response = await fetch('/api/create-checkout-session', {
@@ -85,23 +86,24 @@ export default function Home() {
       });
 
       const session = await response.json();
-      console.log('Sesión de Stripe creada:', session.id);
+      console.log('Sesión de Stripe creada:', session.session_id);
       
       if (response.ok) {
-        setSessionId(session.id);
+        setSessionId(session.session_id);
         const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
+          sessionId: session.session_id,
         });
 
         if (result.error) {
           setError(result.error.message);
-        } else {
-          // Redirigir a result.js con los parámetros necesarios
-          router.push({
-            pathname: '/result',
-            query: { city, days }
-          });
         }
+        // else {
+        //   // Redirigir a result.js con los parámetros necesarios
+        //   router.push({
+        //     pathname: '/result',
+        //     query: { city, days }
+        //   });
+        // }
       } else {
         console.error('Error en la respuesta del servidor:', session.error);
         setError(session.error || 'Error al procesar el pago');

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import { loadStripe } from '@stripe/stripe-js';
+import { createClient } from '@supabase/supabase-js';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 export default function Result() {
   const router = useRouter();
@@ -14,35 +16,74 @@ export default function Result() {
   const [days, setDays] = useState('');
 
   useEffect(() => {
-    const { city, days } = router.query;
-    if (city && days) {
-      const generateItinerary = async () => {
-        setLoading(true); // Inicia la carga
+    const { id } = router.query;
+    if (id) {
+      const fetchItinerary = async () => {
+        setLoading(true);
         try {
-          const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ city, days }),
-          });
+          // Buscar el itinerario en Supabase
+          const { data, error } = await supabase
+            .from('itineraries')
+            .select('*')
+            .eq('id', id)
+            .single();
 
-          const data = await response.json();
-          if (response.ok) {
-            setItinerary(data.result);
+          if (error) throw error;
+
+          if (data) {
+            setCity(data.city);
+            setDays(data.days);
+
+            if (data.result) {
+              setItinerary(data.result);
+              setLoading(false);
+            } else {
+              // Si no hay resultado, generar el itinerario
+              await generateItinerary(data.city, data.days, id);
+            }
           } else {
-            setError(data.error || 'Error al generar el itinerario');
+            setError('Itinerario no encontrado');
+            setLoading(false);
           }
         } catch (err) {
-          setError('Error al conectar con el servidor');
-        } finally {
-          setLoading(false); // Termina la carga
+          setError('Error al obtener el itinerario');
+          setLoading(false);
         }
       };
 
-      generateItinerary();
+      fetchItinerary();
     }
   }, [router.query]);
+
+  const generateItinerary = async (city, days, id) => {
+    try {
+      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ city, days }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setItinerary(data.result);
+        // Guardar el resultado en Supabase
+        const { error } = await supabase
+          .from('itineraries')
+          .update({ result: data.result })
+          .eq('id', id);
+
+        if (error) throw error;
+      } else {
+        setError(data.error || 'Error al generar el itinerario');
+      }
+    } catch (err) {
+      setError('Error al conectar con el servidor');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
