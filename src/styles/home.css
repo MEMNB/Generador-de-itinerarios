@@ -1,0 +1,59 @@
+body {
+    background-color: #cce5ff;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .main-container {
+    background-color: #cce5ff;
+    min-height: 100vh;
+  }
+  
+  .custom-header {
+    background-color: #ffd700;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .travel-plan-title {
+    font-size: 4rem;
+    color: #333333;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-custom {
+    box-shadow: 0 0.5rem 1rem rgba(255, 193, 7, 0.3) !important;
+  }
+  
+  .img-fluid {
+    max-height: 100%;
+    object-fit: cover;
+  }
+  
+  .btn-generate {
+    background-color: #343a40;
+    border-color: #343a40;
+    color: white !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-generate:hover {
+    background-color: #23272b;
+    border-color: #1d2124;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .btn-generate:focus,
+  .btn-generate:active {
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5), 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .markdown-content {
+    line-height: 1.6;
+  }

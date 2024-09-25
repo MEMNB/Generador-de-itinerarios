@@ -8,8 +8,8 @@ export default async function handler(req, res) {
   console.log('Cuerpo de la solicitud:', req.body);
 
   if (req.method === 'POST') {
-    const { ciudad, dias } = req.body;
-    console.log('Datos recibidos:', { ciudad, dias });
+    const { city, days } = req.body;
+    console.log('Datos recibidos:', { city, days });
 
     try {
       /*if (!sessionId) {
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
             },
             {
               role: "user",
-              content: `Quiero ir a ${ciudad} ${dias} días`,
+              content: `Quiero ir a ${city} ${days} días`,
             }
           ]
         },

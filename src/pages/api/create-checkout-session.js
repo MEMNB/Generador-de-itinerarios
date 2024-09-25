@@ -5,11 +5,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-08-
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      const { ciudad, dias, redirect_url } = req.body;
+      const { city, days, redirect_url } = req.body;
 
       // Codificar los parámetros de la URL
-      const encodedCiudad = encodeURIComponent(ciudad);
-      const encodedDias = encodeURIComponent(dias);
+      const encodedCity = encodeURIComponent(city);
+      const encodedDays = encodeURIComponent(days);
 
       // Puedes ajustar el monto según sea necesario
       const amount = 100; // En centavos, por ejemplo, $10.00
@@ -20,14 +20,14 @@ export default async function handler(req, res) {
           price_data: {
             currency: 'eur',
             product_data: {
-              name: `Generar itinerario para ${ciudad} por ${dias} días`,
+              name: `Generar itinerario para ${city} por ${days} días`,
             },
             unit_amount: amount,
           },
           quantity: 1,
         }],
         mode: 'payment',
-        success_url: `${redirect_url}/result/?success=true&city=${encodedCiudad}&days=${encodedDias}`,
+        success_url: `${redirect_url}/result/?success=true&city=${encodedCity}&days=${encodedDays}`,
         cancel_url: `${redirect_url}?canceled=true`,
       });
 
