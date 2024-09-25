@@ -119,7 +119,7 @@ export default function Home() {
       <div className="container-fluid p-0 main-container">
         <header className="custom-header">
           <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ TravelPlan</h1>
-          <p>Nunca fue tan fácil planificar un viaje</p>
+          <p className='travel-plan-p'>Nunca fue tan fácil planificar un viaje</p>
         </header>
 
         <main className="py-3">
@@ -137,7 +137,7 @@ export default function Home() {
             <div className="row">
 
               <div className="col-md-6">
-                <div className="card border-warning border-3 shadow-custom">
+                <div className="card  shadow-custom">
                   <div className="card-body p-4">
                     <h2 className="card-title text-dark text-center mb-4">¡Crea tu itinerario ahora! 🚀</h2>
                     <form onSubmit={handleSubmit}>
@@ -185,8 +185,8 @@ export default function Home() {
                 <Image 
                   src="/images/tu-imagen.jpg" 
                   alt="Descripción de la imagen" 
-                  width={500} 
-                  height={300} 
+                  width={700} 
+                  height={420} 
                   layout="responsive" 
                   className="rounded shadow-custom" 
                   priority

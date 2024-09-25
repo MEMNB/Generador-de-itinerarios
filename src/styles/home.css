@@ -10,16 +10,21 @@ body {
   }
   
   .custom-header {
-    background-color: #ffd700;
+    background-color: #0279f9;
     padding: 2rem 0;
     text-align: center;
   }
   
   .travel-plan-title {
     font-size: 4rem;
-    color: #333333;
+    color: #f3f2f2;
     margin: 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .travel-plan-p {
+    color: #f3f2f2;
+    text-align: center;
   }
   
   .shadow-custom {

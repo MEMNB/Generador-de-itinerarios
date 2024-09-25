@@ -79,6 +79,16 @@ export default function Result() {
     }
   };
 
+  const downloadItinerary = () => {
+    const element = document.createElement("a");
+    const file = new Blob([itinerary], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = `Itinerario_${router.query.city}_${router.query.days}dias.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
   return (
     <div className="container">
       {loading ? (
@@ -88,6 +98,12 @@ export default function Result() {
           <ReactMarkdown className="markdown-content">
             {itinerary}
           </ReactMarkdown>
+          <button 
+            onClick={downloadItinerary} 
+            className="btn btn-primary mt-3"
+          >
+            Descargar Itinerario 📥
+          </button>
         </div>
       ) : (
         <p className="alert alert-danger mt-3">{error}</p>
