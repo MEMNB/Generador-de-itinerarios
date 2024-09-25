@@ -137,7 +137,7 @@ export default function Home() {
             <div className="row">
 
               <div className="col-md-6">
-                <div className="card  shadow-custom">
+                <div className="card shadow-custom">
                   <div className="card-body p-4">
                     <h2 className="card-title text-dark text-center mb-4">¡Crea tu itinerario ahora! 🚀</h2>
                     <form onSubmit={handleSubmit}>

@@ -100,7 +100,7 @@ export default function Result() {
           </ReactMarkdown>
           <button 
             onClick={downloadItinerary} 
-            className="btn btn-primary mt-3"
+            className="btn btn-generate btn-lg w-100"
           >
             Descargar Itinerario 📥
           </button>
@@ -109,7 +109,7 @@ export default function Result() {
         <p className="alert alert-danger mt-3">{error}</p>
       )}
 
-      <div className="card border-warning border-3 shadow-custom mt-5">
+      <div className="card shadow-custom mt-5">
         <div className="card-body p-4">
           <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otro itinerario? 🚀</h2>
           <form onSubmit={handleSubmit}>
