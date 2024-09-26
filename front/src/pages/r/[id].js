@@ -190,7 +190,7 @@ export default function Result() {
               <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otro itinerario? 🚀</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="city" className="form-label">¿A dónde quieres ir? 🌆</label>
+                  <label htmlFor="city" className="form-label">1º ¿A dónde quieres ir? 🌆</label>
                   <div className="input-group">
                     <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
                     <input
@@ -205,7 +205,7 @@ export default function Result() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="days" className="form-label">¿Cuántos días te quedas? 📅</label>
+                  <label htmlFor="days" className="form-label">2º ¿Cuántos días te quedas? 📅</label>
                   <div className="input-group">
                     <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
                     <input
@@ -222,7 +222,7 @@ export default function Result() {
                   </div>
                 </div>
                 <button type="submit" className="btn btn-generate btn-lg w-100">
-                  {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
+                  {loading ? 'Creando magia... ✨' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
                 </button>
               </form>
             </div>

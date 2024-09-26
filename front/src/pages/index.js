@@ -120,8 +120,8 @@ export default function Home() {
     <>
       <div className="container-fluid p-0 main-container">
         <header className="custom-header">
-          <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ TravelPlan</h1>
-          <p className='travel-plan-p'>Nunca fue tan fácil planificar un viaje</p>
+          <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ Itinero</h1>
+          <p className='travel-plan-p'>Creador de rutas de viaje inteligente</p>
         </header>
 
         <main className="py-3">
@@ -136,15 +136,14 @@ export default function Home() {
           )}
 
           <section className="container">
-            <div className="row">
-
-              <div className="col-md-6">
+            <div className="row justify-content-center">
+              <div className="col-md-8">
                 <div className="card shadow-custom">
                   <div className="card-body p-4">
-                    <h2 className="card-title text-dark text-center mb-4">¡Crea tu itinerario ahora! 🚀</h2>
+                    <h2 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje (3 pasos)</h2>
                     <form onSubmit={handleSubmit}>
                       <div className="mb-3">
-                        <label htmlFor="city" className="form-label">¿A dónde quieres ir? 🌆</label>
+                        <label htmlFor="city" className="form-label">1º¿Qué destino te hace soñar? 🌆</label>
                         <div className="input-group">
                           <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
                           <input
@@ -159,7 +158,7 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="days" className="form-label">¿Cuántos días te quedas? 📅</label>
+                        <label htmlFor="days" className="form-label">2º ¿Cuántos días durará tu escapada? 📅</label>
                         <div className="input-group">
                           <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
                           <input
@@ -176,32 +175,18 @@ export default function Home() {
                         </div>
                       </div>
                       <button type="submit" className="btn btn-generate btn-lg w-100">
-                        {loading ? 'Creando magia... ✨' : '¡Generar mi itinerario por solo 1€! 💫'}
+                        {loading ? '¡Preparando tu aventura! ✈️' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
                       </button>
                     </form>
                   </div>
                 </div>
               </div>
-
-              <div className="col-md-6 mb-4 mb-md-0">
-                <Image 
-                  src="/images/tu-imagen.jpg" 
-                  alt="Descripción de la imagen" 
-                  width={700} 
-                  height={420} 
-                  layout="responsive" 
-                  className="rounded shadow-custom" 
-                  priority
-                />
-              </div>
-
             </div>
           </section>
 
           {error && <p className="alert alert-danger mt-3">{error}</p>}
         </main>
       </div>
-
     </>
   );
 }
