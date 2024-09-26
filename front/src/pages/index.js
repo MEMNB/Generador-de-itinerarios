@@ -152,7 +152,7 @@ export default function Home() {
                           <input
                             type="text"
                             className="form-control form-control-lg"
-                            id="city"
+                            session_id="city"
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
                             required
@@ -167,7 +167,7 @@ export default function Home() {
                           <input
                             type="number"
                             className="form-control form-control-lg"
-                            id="days"
+                            session_id="days"
                             value={days}
                             onChange={(e) => setDays(e.target.value)}
                             required
