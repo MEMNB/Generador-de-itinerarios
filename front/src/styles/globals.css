@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Estilos para el contenido de Markdown */
 .markdown-content {
   font-family: 'Arial', sans-serif;

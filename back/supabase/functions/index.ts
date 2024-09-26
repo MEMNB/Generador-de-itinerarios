@@ -26,7 +26,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "Eres un creador de itinerarios y con la ciudad y el numero de días que recibas debes crear un itinerario adecuado a esos días. Cuando proporciones itinerarios o listas de actividades, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc."
+              content: "Eres un creador de itinerarios y con la ciudad y el numero de días que recibas debes crear un itinerario adecuado a esos días. Cuando proporciones itinerarios o listas de actividades, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc. El itinerario debe comenzar directamente desde Día 1 sin incluir frases de introducción antes del día 1."
             },
             {
               role: "user",
