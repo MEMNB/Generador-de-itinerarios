@@ -1,31 +1,13 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid';
-import Cors from 'cors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-08-01' });
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-const cors = Cors({
-  methods: ['POST', 'HEAD'],
-});
-
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
-
 export default async function handler(req, res) {
-  await runMiddleware(req, res, cors);
-
   console.log('Método de la solicitud:', req.method);
   console.log('URL de la solicitud:', req.url);
   console.log('Encabezados de la solicitud:', req.headers);
