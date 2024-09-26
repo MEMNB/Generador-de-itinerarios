@@ -77,12 +77,15 @@ export default function Home() {
 
       const stripe = await stripePromise;
       console.log("pasa");
+      const body = JSON.stringify({ city, days, redirect_url: document.location.href });
+      console.log('Cuerpo de la solicitud:', body);
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ city, days, redirect_url: document.location.href }),
+        body: body,
       });
 
       const session = await response.json();

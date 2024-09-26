@@ -1,17 +1,43 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid';
+import Cors from 'cors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-08-01' });
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
+const cors = Cors({
+  methods: ['POST', 'HEAD'],
+});
+
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+}
+
 export default async function handler(req, res) {
-  // Asegúrate de que la ruta API solo acepte solicitudes POST
+  await runMiddleware(req, res, cors);
+
+  console.log('Método de la solicitud:', req.method);
+  console.log('URL de la solicitud:', req.url);
+  console.log('Encabezados de la solicitud:', req.headers);
+  console.log('Cuerpo de la solicitud:', req.body);
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
-    return res.status(405).end(`Método ${req.method} no permitido`);
+    return res.status(405).json({ error: `Método ${req.method} no permitido` });
   }
 
   try {
@@ -46,7 +72,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ session_id: session.id, itineraryId: itineraryId });
   } catch (error) {
-    console.error('Error en la creación de la sesión de pago:', error);
+    console.error('Error en el servidor:', error);
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
