@@ -31,10 +31,6 @@ export default async function handler(req, res) {
   console.log('Encabezados de la solicitud:', req.headers);
   console.log('Cuerpo de la solicitud:', req.body);
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: `Método ${req.method} no permitido` });
