@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from('itineraries')
       .insert([
-        { session_id: itineraryId, days: days, city: city, stripe_session_id: session.id },
+        { id: itineraryId, days: days, city: city, stripe_session_id: session.id },
       ])
       .select()
 
