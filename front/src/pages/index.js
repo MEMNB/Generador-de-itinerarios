@@ -124,7 +124,8 @@ export default function Home() {
       <div className="container-fluid p-0 main-container">
         <header className="custom-header">
           <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ Itinero</h1>
-          <p className='travel-plan-p'>Creador de rutas de viaje inteligente</p>
+          <p className='travel-plan-p'>Crea tu ruta de viaje en 3 sencillos pasos:</p>
+          <p className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta</p>
         </header>
 
         <main className="py-3">
