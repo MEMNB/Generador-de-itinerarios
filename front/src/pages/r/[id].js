@@ -187,7 +187,7 @@ export default function Result() {
         <>
           <div className="card shadow-custom mt-5">
             <div className="card-body p-4">
-              <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otro itinerario? 🚀</h2>
+              <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otra ruta de viaje? 🚀</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="city" className="form-label">1º ¿A dónde quieres ir? 🌆</label>
@@ -222,7 +222,7 @@ export default function Result() {
                   </div>
                 </div>
                 <button type="submit" className="btn btn-generate btn-lg w-100">
-                  {loading ? 'Creando magia... ✨' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
+                  {loading ? 'Preparando tu ruta... ✨' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
                 </button>
               </form>
             </div>

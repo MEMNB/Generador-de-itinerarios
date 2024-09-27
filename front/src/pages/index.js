@@ -124,8 +124,8 @@ export default function Home() {
       <div className="container-fluid p-0 main-container">
         <header className="custom-header">
           <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ Itinero</h1>
-          <p className='travel-plan-p'>Crea tu ruta de viaje en 3 sencillos pasos:</p>
-          <p className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta</p>
+          <h3 className='travel-plan-p'>Crea tu ruta de viaje en 3 sencillos pasos:</h3>
+          <h3 className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta</h3>
         </header>
 
         <main className="py-3">
@@ -153,7 +153,7 @@ export default function Home() {
                           <input
                             type="text"
                             className="form-control form-control-lg"
-                            session_id="city"
+                            id="city"
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
                             required
@@ -168,7 +168,7 @@ export default function Home() {
                           <input
                             type="number"
                             className="form-control form-control-lg"
-                            session_id="days"
+                            id="days"
                             value={days}
                             onChange={(e) => setDays(e.target.value)}
                             required
@@ -179,7 +179,7 @@ export default function Home() {
                         </div>
                       </div>
                       <button type="submit" className="btn btn-generate btn-lg w-100">
-                        {loading ? '¡Preparando tu aventura! ✈️' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
+                        {loading ? '¡Preparando tu ruta! ✈️' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
                       </button>
                     </form>
                   </div>
