@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import { loadStripe } from '@stripe/stripe-js';
 import { createClient } from '@supabase/supabase-js';
+import Cuestionary from '../../components/Cuestionary';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 export const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
@@ -11,12 +12,15 @@ export default function Result() {
   const router = useRouter();
   const [itinerary, setItinerary] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Cambiado a true inicialmente
   const [city, setCity] = useState('');
   const [days, setDays] = useState('');
   const [notFound, setNotFound] = useState(false);
+  const [isReady, setIsReady] = useState(false); // Nuevo estado
 
   useEffect(() => {
+    if (!router.isReady) return;
+    setIsReady(true);
     const { id } = router.query;
     if (id) {
       const fetchItinerary = async () => {
@@ -56,7 +60,7 @@ export default function Result() {
 
       fetchItinerary();
     }
-  }, [router.query]);
+  }, [router.isReady, router.query]);
 
   const generateItinerary = async (city, days, id) => {
     try {
@@ -104,40 +108,7 @@ export default function Result() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      const stripe = await stripePromise;
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ city, days, redirect_url: window.location.origin }),
-      });
-
-      const session = await response.json();
-      
-      if (response.ok) {
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
-
-        if (result.error) {
-          setError(result.error.message);
-        }
-      } else {
-        setError(session.error || 'Error al procesar el pago');
-      }
-    } catch (err) {
-      setError('Error al conectar con el servidor');
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!isReady) return null; // No renderizar nada hasta que el router esté listo
 
   if (notFound) {
     return (
@@ -168,65 +139,26 @@ export default function Result() {
           <p className="fs-5">Prepárate para descubrir experiencias únicas en {city}. Esto puede tomar unos momentos...</p>
         </div>
       ) : itinerary ? (
-        <div className="bg-white p-4 rounded-3 shadow-custom mb-5">
-          <ReactMarkdown className="markdown-content">
-            {itinerary}
-          </ReactMarkdown>
-          <button 
-            onClick={shareItinerary} 
-            className="btn btn-generate btn-lg w-100"
-          >
-            Compartir Itinerario 📤
-          </button>
-        </div>
-      ) : (
-        <p className="alert alert-danger mt-3">{error}</p>
-      )}
-
-      {!loading && (
         <>
-          <div className="card shadow-custom mt-5">
-            <div className="card-body p-4">
-              <h2 className="card-title text-dark text-center mb-4">¿Quieres generar otra ruta de viaje? 🚀</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="city" className="form-label">1º ¿A dónde quieres ir? 🌆</label>
-                  <div className="input-group">
-                    <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                    <input
-                      type="text"
-                      className="form-control form-control-lg"
-                      id="city"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      required
-                      placeholder="Ej: París, Roma, Tokio..."
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="days" className="form-label">2º ¿Cuántos días te quedas? 📅</label>
-                  <div className="input-group">
-                    <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
-                    <input
-                      type="number"
-                      className="form-control form-control-lg"
-                      id="days"
-                      value={days}
-                      onChange={(e) => setDays(e.target.value)}
-                      required
-                      min="1"
-                      max="30"
-                      placeholder="Ej: 3, 5, 7..."
-                    />
-                  </div>
-                </div>
-                <button type="submit" className="btn btn-generate btn-lg w-100">
-                  {loading ? 'Preparando tu ruta... ✨' : '3º ¡Generar mi itinerario por solo 1€! 💫'}
-                </button>
-              </form>
-            </div>
+          <div className="bg-white p-4 rounded-3 shadow-custom mb-5">
+            <ReactMarkdown className="markdown-content">
+              {itinerary}
+            </ReactMarkdown>
+            <button 
+              onClick={shareItinerary} 
+              className="btn btn-generate btn-lg w-100"
+            >
+              Compartir Itinerario 📤
+            </button>
           </div>
+          
+          <section className="container">
+            <div className="row justify-content-center">
+              <div className="col-md-8">
+                <Cuestionary onSubmit={generateItinerary} />
+              </div>
+            </div>
+          </section>
 
           <div className="d-flex justify-content-center mt-3">
             <button onClick={() => router.push('/')} className="btn btn-warning fw-bold mt-2 mb-3 btn-lg shadow-sm rounded-pill">
@@ -234,6 +166,8 @@ export default function Result() {
             </button>
           </div>
         </>
+      ) : (
+        <p className="alert alert-danger mt-3">{error}</p>
       )}
     </div>
   );
