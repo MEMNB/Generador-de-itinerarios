@@ -17,6 +17,7 @@ export default function Result() {
   const [days, setDays] = useState('');
   const [notFound, setNotFound] = useState(false);
   const [isReady, setIsReady] = useState(false); // Nuevo estado
+  const [newItineraryLoading, setNewItineraryLoading] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -92,6 +93,39 @@ export default function Result() {
     }
   };
 
+  const handleNewItinerary = async (city, days) => {
+    setNewItineraryLoading(true);
+    try {
+      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ city, days }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Crear un nuevo registro en la base de datos
+        const { data: newItinerary, error } = await supabase
+          .from('itineraries')
+          .insert({ city, days, result: data.result })
+          .single();
+
+        if (error) throw error;
+
+        // Redirigir a la nueva página de itinerario
+        router.push(`/r/${newItinerary.id}`);
+      } else {
+        setError(data.error || 'Error al generar el itinerario');
+      }
+    } catch (err) {
+      setError('Error al conectar con el servidor');
+    } finally {
+      setNewItineraryLoading(false);
+    }
+  };
+
   const shareItinerary = async () => {
     if (navigator.share) {
       try {
@@ -155,7 +189,7 @@ export default function Result() {
           <section className="container">
             <div className="row justify-content-center">
               <div className="col-md-8">
-                <Cuestionary onSubmit={generateItinerary} />
+                <Cuestionary onSubmit={handleNewItinerary} isLoading={newItineraryLoading} />
               </div>
             </div>
           </section>

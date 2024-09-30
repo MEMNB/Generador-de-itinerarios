@@ -18,7 +18,7 @@ export default function TravelForm({ onSubmit }) {
 
     try {
       const stripe = await stripePromise;
-      const body = JSON.stringify({ city, days, redirect_url: document.location.href });
+      const body = JSON.stringify({ city, days, redirect_url: `https://${document.location.host}` });
 
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
