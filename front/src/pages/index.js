@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <div className="container-fluid p-0 main-container">
       <header className="custom-header">
-        <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️ Itinero</h1>
+        <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️Ruta de Viaje</h1>
         <h3 className='travel-plan-p'>Crea tu ruta de viaje en 3 sencillos pasos:</h3>
         <h3 className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta</h3>
       </header>

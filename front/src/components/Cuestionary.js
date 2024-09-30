@@ -58,7 +58,7 @@ export default function TravelForm({ onSubmit }) {
         <h2 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje (3 pasos)</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="city" className="form-label">1º¿Qué destino te hace soñar? 🌆</label>
+            <label htmlFor="city" className="form-label">1º¿Qué destino vas a visitar? 🌆</label>
             <div className="input-group">
               <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
               <input
