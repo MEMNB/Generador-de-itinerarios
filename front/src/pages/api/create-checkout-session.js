@@ -7,6 +7,14 @@ const supabaseUrl = process.env.SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
+// Define tu código de descuento
+const VALID_DISCOUNT_CODE = 'DESCUENTO50'; // Cambia esto por tu código deseado
+
+// Función para validar el código de descuento
+function is_valid_discount_code(code) {
+  return code === VALID_DISCOUNT_CODE; // Verifica si el código es válido
+}
+
 export default async function handler(req, res) {
   console.log('Método de la solicitud:', req.method);
   console.log('URL de la solicitud:', req.url);
@@ -19,10 +27,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { city, days, redirect_url } = req.body;
-    const amount = 100; // En centavos, por ejemplo, $10.00
+    const { city, days, redirect_url, discount_code } = req.body;
+    const amount = 500;
 
     const itineraryId = uuidv4();
+
+    let price = amount;
+    if (discount_code && is_valid_discount_code(discount_code)) {
+      price = get_discounted_price(amount); // Pasar el monto original
+    }
+    else {
+      price = amount;
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -32,7 +48,7 @@ export default async function handler(req, res) {
           product_data: {
             name:  `Guía de viaje para ${city} por ${days} días`,
           },
-          unit_amount: amount,
+          unit_amount: price,
         },
         quantity: 1,
       }],
@@ -53,4 +69,9 @@ export default async function handler(req, res) {
     console.error('Error en el servidor:', error);
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
+}
+
+// Agrega esta función para calcular el precio con descuento
+function get_discounted_price(originalPrice) {
+  return originalPrice * 0.5; // 50% de descuento
 }
