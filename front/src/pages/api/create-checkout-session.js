@@ -8,7 +8,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 // Define tu código de descuento
-const VALID_DISCOUNT_CODE = 'DESCUENTO50'; // Cambia esto por tu código deseado
+const VALID_DISCOUNT_CODE = 'DE50'; // Cambia esto por tu código deseado
 
 // Función para validar el código de descuento
 function is_valid_discount_code(code) {
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   try {
     const { city, days, redirect_url, discount_code } = req.body;
-    const amount = 500;
+    const amount = 400;
 
     const itineraryId = uuidv4();
 

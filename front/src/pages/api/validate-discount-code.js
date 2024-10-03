@@ -1,8 +1,8 @@
-const VALID_DISCOUNT_CODE = 'DESCUENTO50'; // Cambia esto por tu código deseado
+const VALID_DISCOUNT_CODE = 'DE50'; // Cambia esto por tu código deseado
 
 // Función para validar el código de descuento
 function check_discount_code(code) {
-  return {valid: code === VALID_DISCOUNT_CODE, percentage: 50};
+  return {valid: code.toLowerCase() === VALID_DISCOUNT_CODE.toLowerCase(), percentage: 50};
 }
 
 export default function handler(req, res) {
