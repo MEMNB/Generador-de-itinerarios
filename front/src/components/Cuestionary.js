@@ -141,7 +141,7 @@ export default function Cuestionary({ onSubmit }) {
               onClick={handleDiscountCodeToggle}
               style={{ background: 'none', border: 'none', color: 'black', textDecoration: 'underline', cursor: 'pointer' }} // Cambios aquí
             >
-              {showDiscountCode ? 'Ocultar código de descuento' : 'Aplicar código de descuento'}
+              {showDiscountCode ? 'Ocultar código' : 'Aplicar código'}
             </button>
             {showDiscountCode && (
               <div className="mt-2">

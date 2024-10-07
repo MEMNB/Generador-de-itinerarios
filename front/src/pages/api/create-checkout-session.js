@@ -1,19 +1,13 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid';
+import { validateDiscountCode } from './validate-discount-code'; // Asegúrate de que esta función esté exportada
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-08-01' });
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-// Define tu código de descuento
-const VALID_DISCOUNT_CODE = 'DE50'; // Cambia esto por tu código deseado
-
-// Función para validar el código de descuento
-function is_valid_discount_code(code) {
-  return code === VALID_DISCOUNT_CODE; // Verifica si el código es válido
-}
 
 export default async function handler(req, res) {
   console.log('Método de la solicitud:', req.method);
@@ -33,10 +27,9 @@ export default async function handler(req, res) {
     const itineraryId = uuidv4();
 
     let price = amount;
-    if (discount_code && is_valid_discount_code(discount_code)) {
-      price = get_discounted_price(amount); // Pasar el monto original
-    }
-    else {
+    if (discount_code && (await validateDiscountCode(discount_code)).valid) { 
+      price = get_discounted_price(amount); 
+    } else {
       price = amount;
     }
 
@@ -71,7 +64,7 @@ export default async function handler(req, res) {
   }
 }
 
-// Agrega esta función para calcular el precio con descuento
+
 function get_discounted_price(originalPrice) {
-  return originalPrice * 0.5; // 50% de descuento
+  return originalPrice * 0.5; 
 }

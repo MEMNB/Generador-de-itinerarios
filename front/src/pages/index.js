@@ -12,7 +12,7 @@ export default function Home() {
   const generateItinerary = useCallback(async ({ city, days }) => {
     setGenerando(true);
     try {
-      const response = await fetch('/api/itinerario', {
+      const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

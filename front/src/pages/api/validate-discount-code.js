@@ -1,17 +1,36 @@
-const VALID_DISCOUNT_CODE = 'DE50'; // Cambia esto por tu código deseado
+import { createClient } from '@supabase/supabase-js';
 
-// Función para validar el código de descuento
-function check_discount_code(code) {
-  return {valid: code.toLowerCase() === VALID_DISCOUNT_CODE.toLowerCase(), percentage: 50};
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+
+export async function validateDiscountCode(code) { 
+  console.log(`Validando código de descuento: ${code}`); 
+  const { data, error } = await supabase
+    .from('coupons')
+    .select('*')
+    .like('code', code)
+    .single()
+
+  console.log({data, error});
+
+  if (error || !data) {
+    console.error('Error al validar el código de descuento:', error);
+    return { valid: false, percentage: 0 };
+  }
+  return { valid: true, percentage: data.discount_percentage };
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: `Método ${req.method} no permitido` });
   }
 
   const { discount_code } = req.body;
-  const discount_code_verified = check_discount_code(discount_code);
+  const discount_code_verified = await validateDiscountCode(discount_code);
   return res.status(200).json(discount_code_verified);
 }
