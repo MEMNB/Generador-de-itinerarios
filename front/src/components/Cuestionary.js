@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -15,6 +15,15 @@ export default function Cuestionary({ onSubmit }) {
   const [price, setPrice] = useState(amount);
   const [discountCode, setDiscountCode] = useState('');
   const [discountMessage, setDiscountMessage] = useState('');
+
+ 
+  useEffect(() => {
+    const codigoDescuento = router.query.codigo_descuento;
+    if (codigoDescuento) {
+      setDiscountCode(codigoDescuento);
+      validateDiscountCode(codigoDescuento);  
+    }
+  }, [router.query]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,12 +76,13 @@ export default function Cuestionary({ onSubmit }) {
     }
   };
 
-  const validateDiscountCode = async () => {
+  
+  const validateDiscountCode = async (code = discountCode) => {
     try {
       const response = await fetch('/api/validate-discount-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ discount_code: discountCode }),
+        body: JSON.stringify({ discount_code: code }),
       });
       const result = await response.json();
       if (response.ok && result.valid) {
@@ -131,7 +141,7 @@ export default function Cuestionary({ onSubmit }) {
             className="btn btn-primary btn-lg w-100 mb-3"
             disabled={loading}
           >
-            {loading ? 'Preparando tu ruta... ✈️' : `3. ¡Generar mi itinerario por ${price/100}€! 💫`}
+            {loading ? 'Preparando tu ruta... ✈️' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`}
           </button>
           
           <div className="mb-1">
@@ -139,7 +149,7 @@ export default function Cuestionary({ onSubmit }) {
               type="button"
               className="btn btn-outline-secondary w-100"
               onClick={handleDiscountCodeToggle}
-              style={{ background: 'none', border: 'none', color: 'black', textDecoration: 'underline', cursor: 'pointer' }} // Cambios aquí
+              style={{ background: 'none', border: 'none', color: 'black', textDecoration: 'underline', cursor: 'pointer' }}
             >
               {showDiscountCode ? 'Ocultar código' : 'Aplicar código'}
             </button>
@@ -156,7 +166,7 @@ export default function Cuestionary({ onSubmit }) {
                   <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={validateDiscountCode}
+                    onClick={() => validateDiscountCode(discountCode)}
                   >
                     Validar
                   </button>
@@ -169,8 +179,6 @@ export default function Cuestionary({ onSubmit }) {
               </div>
             )}
           </div>
-
-          
 
         </form>
 

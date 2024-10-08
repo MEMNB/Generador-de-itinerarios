@@ -22,13 +22,20 @@ export default async function handler(req, res) {
 
   try {
     const { city, days, redirect_url, discount_code } = req.body;
+    console.log('Datos recibidos:', req.body);
     const amount = 400;
 
     const itineraryId = uuidv4();
 
     let price = amount;
-    if (discount_code && (await validateDiscountCode(discount_code)).valid) { 
-      price = get_discounted_price(amount); 
+    let discountValidation = { valid: false, percentage: 0 }; 
+
+    if (discount_code) { 
+      discountValidation = await validateDiscountCode(discount_code); 
+    }
+
+    if (discountValidation.valid) { 
+      price = get_discounted_price(amount, discountValidation.percentage); 
     } else {
       price = amount;
     }
@@ -65,6 +72,6 @@ export default async function handler(req, res) {
 }
 
 
-function get_discounted_price(originalPrice) {
-  return originalPrice * 0.5; 
+function get_discounted_price(originalPrice, discountPercentage) {
+  return parseInt(originalPrice * (1 - discountPercentage / 100)); 
 }
