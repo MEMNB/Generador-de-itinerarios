@@ -18,7 +18,7 @@ export default function Cuestionary({ onSubmit }) {
 
  
   useEffect(() => {
-    const codigoDescuento = router.query.codigo_descuento;
+    const codigoDescuento = router.query.codigo;
     if (codigoDescuento) {
       setDiscountCode(codigoDescuento);
       validateDiscountCode(codigoDescuento);  
