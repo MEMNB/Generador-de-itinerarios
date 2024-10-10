@@ -12,7 +12,7 @@ export async function validateDiscountCode(code) {
   const { data, error } = await supabase
     .from('coupons')
     .select('*')
-    .like('code', code)
+    .ilike('code', code)
     .single()
 
   console.log({data, error});
