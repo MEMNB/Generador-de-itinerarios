@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { loadStripe } from '@stripe/stripe-js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
@@ -162,6 +163,7 @@ export default function Cuestionary({ onSubmit }) {
                     value={discountCode}
                     onChange={(e) => setDiscountCode(e.target.value)}
                     placeholder="Introduce tu código"
+                    style={{ boxShadow: 'none' }} 
                   />
                   <button
                     type="button"

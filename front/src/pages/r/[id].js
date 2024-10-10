@@ -195,7 +195,7 @@ export default function Result() {
           </section>
 
           <div className="d-flex justify-content-center mt-3">
-            <button onClick={() => router.push('/')} className="btn btn-warning fw-bold mt-2 mb-3 btn-lg shadow-sm rounded-pill">
+            <button onClick={() => router.push('/')} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
               Volver a la página principal
             </button>
           </div>
