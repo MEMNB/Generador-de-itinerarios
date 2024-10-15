@@ -8,6 +8,7 @@ export default function Home() {
   const router = useRouter();
   const [itinerary, setItinerary] = useState('');
   const [generando, setGenerando] = useState(false);
+  const [showCookieNotice, setShowCookieNotice] = useState(true);
 
   const generateItinerary = useCallback(async ({ city, days }) => {
     setGenerando(true);
@@ -43,8 +44,46 @@ export default function Home() {
     }
   }, [router.isReady, router.query, generando, generateItinerary]);
 
+  // Función para ocultar el aviso de cookies
+  const hideCookieNotice = () => {
+    setShowCookieNotice(false);
+  };
+
+  // Agregar event listener para ocultar el aviso al hacer clic
+  useEffect(() => {
+    const handleUserClick = () => {
+      hideCookieNotice();
+    };
+
+    window.addEventListener('click', handleUserClick);
+
+    // Limpiar el event listener al desmontar el componente
+    return () => {
+      window.removeEventListener('click', handleUserClick);
+    };
+  }, []);
+
   return (
     <div className="container-fluid p-0 main-container">
+      {/* Aviso de cookies */}
+      {showCookieNotice && (
+        <div className="cookie-notice" style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          border: '1px solid #ccc',
+          borderRadius: '5px',
+          padding: '5px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+          zIndex: 1000,
+          width: '200px', // Ajusta el ancho del cuadro
+        }}>
+          <p style={{ margin: 0, fontSize: '12px' }}>Este sitio utiliza cookies para mejorar la experiencia del usuario.</p>
+          <p style={{ margin: 0, fontSize: '12px' }}>Al continuar navegando, aceptas el uso de cookies.</p>
+        </div>
+      )}
+
       <header className="custom-header">
         <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️Ruta de Viaje</h1>
         <h3 className='travel-plan-p'>Crea tu ruta de viaje en un instante:</h3>
