@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>Ruta de Viaje - Tu Planificador de Viajes</title>
-        <script defer data-domain="rutadeviaje.es" src="http://plausible-pwssk0kkokgo8ggo8kcw4wsc.157.90.124.158.sslip.io/js/script.js"></script>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="4982d68d-803f-4eea-997e-94b0c6361fcd"></script>
         <meta property="description" content="Ruta de Viaje es una plataforma que te permite planificar tus viajes. Genera un itinerario al instante ingresando la ciudad que desees y los días que planeas estar." />
         <meta property="og:image" content="Link preview image URL"></meta>
       </Head>
