@@ -6,11 +6,11 @@ import Cuestionary from '../components/Cuestionary';
 
 export default function Home() {
   const router = useRouter();
-  const [recipe, setRecipe] = useState('');
+  const [itinerary, setItinerary] = useState('');
   const [generando, setGenerando] = useState(false);
   const [showCookieNotice, setShowCookieNotice] = useState(true);
 
-  const generateRecipe = useCallback(async ({ ingredients }) => {
+  const generateItinerary = useCallback(async ({ city, days }) => {
     setGenerando(true);
     try {
       const response = await fetch('/api/create-checkout-session', {
@@ -18,14 +18,14 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients }),
+        body: JSON.stringify({ city, days }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        setRecipe(data.recipe);
+        setItinerary(data.itinerary);
       } else {
-        console.error('Error al generar la receta:', data.error);
+        console.error('Error al generar el itinerario:', data.error);
       }
     } catch (err) {
       console.error('Error al conectar con el servidor:', err);
@@ -36,20 +36,20 @@ export default function Home() {
 
   useEffect(() => {
     if (router.isReady) {
-      const { success, ingredients } = router.query;
-      if (success === 'true' && ingredients && !generando) {
-        generateRecipe({ ingredients });
+      const { success, city, days } = router.query;
+      if (success === 'true' && city && days && !generando) {
+        generateItinerary({ city, days });
         router.replace('/', undefined, { shallow: true });
       }
     }
-  }, [router.isReady, router.query, generando, generateRecipe]);
+  }, [router.isReady, router.query, generando, generateItinerary]);
 
-  
+  // Función para ocultar el aviso de cookies
   const hideCookieNotice = () => {
     setShowCookieNotice(false);
   };
 
-  
+  // Agregar event listener para ocultar el aviso al hacer clic
   useEffect(() => {
     const handleUserClick = () => {
       hideCookieNotice();
@@ -57,7 +57,7 @@ export default function Home() {
 
     window.addEventListener('click', handleUserClick);
 
-
+    // Limpiar el event listener al desmontar el componente
     return () => {
       window.removeEventListener('click', handleUserClick);
     };
@@ -65,7 +65,7 @@ export default function Home() {
 
   return (
     <div className="container-fluid p-0 main-container">
-      
+      {/* Aviso de cookies */}
       {showCookieNotice && (
         <div className="cookie-notice" style={{
           position: 'fixed',
@@ -77,7 +77,7 @@ export default function Home() {
           padding: '5px',
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
           zIndex: 1000,
-          width: '400px', 
+          width: '200px', // Ajusta el ancho del cuadro
         }}>
           <p style={{ margin: 0, fontSize: '12px' }}>Este sitio utiliza cookies para mejorar la experiencia del usuario.</p>
           <p style={{ margin: 0, fontSize: '12px' }}>Al continuar navegando, aceptas el uso de cookies.</p>
@@ -85,17 +85,17 @@ export default function Home() {
       )}
 
       <header className="custom-header">
-        <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🥞¿Qué como hoy?</h1>
-        <h3 className='travel-plan-p'>Crea tu receta en un instante:</h3>
-        <h3 className='travel-plan-p'> Añade los ingredientes que tengas en casa y te generamos una receta</h3>
+        <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️Ruta de Viaje</h1>
+        <h3 className='travel-plan-p'>Crea tu ruta de viaje en un instante:</h3>
+        <h3 className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta de viaje</h3>
       </header>
 
       <main className="py-3">
-        {recipe && (
+        {itinerary && (
           <section className="container mb-5">
             <div className="bg-white p-4 rounded-3 shadow-custom">
               <ReactMarkdown className="markdown-content">
-                {recipe}
+                {itinerary}
               </ReactMarkdown>
             </div>
           </section>

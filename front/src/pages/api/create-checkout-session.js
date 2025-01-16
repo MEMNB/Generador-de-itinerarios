@@ -21,53 +21,50 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { ingredients, redirect_url, discount_code } = req.body;
+    const { city, days, redirect_url, discount_code } = req.body;
     console.log('Datos recibidos:', req.body);
     const amount = 400;
 
-    const recipeId = uuidv4();
+    const itineraryId = uuidv4();
 
     let price = amount;
-    let session = {id: null}
     let discountValidation = { valid: false, percentage: 0 }; 
 
-    if (discount_code) {
-      discountValidation = await validateDiscountCode(discount_code);
+    if (discount_code) { 
+      discountValidation = await validateDiscountCode(discount_code); 
     }
 
-    if (discountValidation.valid) {
-      price = get_discounted_price(amount, discountValidation.percentage);
+    if (discountValidation.valid) { 
+      price = get_discounted_price(amount, discountValidation.percentage); 
     } else {
       price = amount;
     }
 
-    if (price && price >= 50) {
-      session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [{
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name:  `Guía de viaje para ${city} por ${days} días`,
-            },
-            unit_amount: price,
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name:  `Guía de viaje para ${city} por ${days} días`,
           },
-          quantity: 1,
-        }],
-        mode: 'payment',
-        success_url: `${redirect_url}/r/${itineraryId}`,
-        cancel_url: `${redirect_url}?canceled=true`,
-      });
-    }
-  
+          unit_amount: price,
+        },
+        quantity: 1,
+      }],
+      mode: 'payment',
+      success_url: `${redirect_url}/r/${itineraryId}`,
+      cancel_url: `${redirect_url}?canceled=true`,
+    });
+
     const { data, error } = await supabase
-      .from('recipes')
+      .from('itineraries')
       .insert([
-        { id: recipeId, ingredients: ingredients, stripe_session_id: session.id, coupon: discountValidation.id },
+        { id: itineraryId, days: days, city: city, stripe_session_id: session.id },
       ])
       .select()
 
-    res.status(200).json({ session_id: session.id, recipeId: recipeId });
+    res.status(200).json({ session_id: session.id, itineraryId: itineraryId });
   } catch (error) {
     console.error('Error en el servidor:', error);
     return res.status(500).json({ error: 'Error interno del servidor' });
@@ -76,5 +73,5 @@ export default async function handler(req, res) {
 
 
 function get_discounted_price(originalPrice, discountPercentage) {
-  return parseInt(originalPrice * (1 - discountPercentage / 100));
+  return parseInt(originalPrice * (1 - discountPercentage / 100)); 
 }

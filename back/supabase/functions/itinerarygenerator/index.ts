@@ -12,8 +12,8 @@ serve(async (req) => {
   }
   if (req.method === 'POST') {
     try {
-      const { ingredients } = await req.json()
-      console.log('Datos recibidos:', { ingredients })
+      const { city, days } = await req.json()
+      console.log('Datos recibidos:', { city, days })
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -26,11 +26,11 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "Eres un creador de recetas y con los ingredientes que recibas debes crear una receta adecuada a esos ingredientes. Cuando proporciones recetas, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, etc. La receta debe comenzar directamente sin incluir frases de introducción."
+              content: "Eres un creador de itinerarios y con la ciudad y el numero de días que recibas debes crear un itinerario adecuado a esos días. Cuando proporciones itinerarios o listas de actividades, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc. El itinerario debe comenzar directamente desde Día 1 sin incluir frases de introducción antes del día 1."
             },
             {
               role: "user",
-              content: `Quiero una receta con ${ingredients} ingredientes`,
+              content: `Quiero ir a ${city} ${days} días`,
             }
           ]
         })
@@ -41,13 +41,13 @@ serve(async (req) => {
       }
 
       const data = await response.json()
-      const recipe = data.choices[0].message.content.trim()
-      console.log('Receta generada con éxito')
+      const itinerario = data.choices[0].message.content.trim()
+      console.log('Itinerario generado con éxito')
 
-      const recipeConEspacios = recipe.replace(/\n/g, '\n\n')
+      const itinerarioConEspacios = itinerario.replace(/\n/g, '\n\n')
 
       return new Response(
-        JSON.stringify({ result: recipeConEspacios }),
+        JSON.stringify({ result: itinerarioConEspacios }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       )
     } catch (error) {

@@ -19,9 +19,9 @@ export async function validateDiscountCode(code) {
 
   if (error || !data) {
     console.error('Error al validar el código de descuento:', error);
-    return { id: null, valid: false, percentage: 0 };
+    return { valid: false, percentage: 0 };
   }
-  return { id: data.id, valid: true, percentage: data.discount_percentage };
+  return { valid: true, percentage: data.discount_percentage };
 }
 
 export default async function handler(req, res) {

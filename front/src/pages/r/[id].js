@@ -10,25 +10,26 @@ export const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, proce
 
 export default function Result() {
   const router = useRouter();
-  const [recipe, setRecipe] = useState('');
+  const [itinerary, setItinerary] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Cambiado a true inicialmente
-  const [ingredients, setIngredients] = useState('');
+  const [city, setCity] = useState('');
+  const [days, setDays] = useState('');
   const [notFound, setNotFound] = useState(false);
   const [isReady, setIsReady] = useState(false); // Nuevo estado
-  const [newRecipeLoading, setNewRecipeLoading] = useState(false);
+  const [newItineraryLoading, setNewItineraryLoading] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
     setIsReady(true);
     const { id } = router.query;
     if (id) {
-      const fetchRecipe = async () => {
+      const fetchItinerary = async () => {
         setLoading(true);
         try {
-          
+          // Buscar el itinerario en Supabase
           const { data, error } = await supabase
-            .from('recipes')
+            .from('itineraries')
             .select('*')
             .eq('id', id)
             .single();
@@ -38,51 +39,52 @@ export default function Result() {
           }
 
           if (data) {
-            setIngredients(data.ingredients);
+            setCity(data.city);
+            setDays(data.days);
 
             if (data.result) {
-              setRecipe(data.result);
+              setItinerary(data.result);
               setLoading(false);
             } else {
-              
-              await generateRecipe(data.ingredients, id);
+              // Si no hay resultado, generar el itinerario
+              await generateItinerary(data.city, data.days, id);
             }
           } else {
-            setError('Receta no encontrado');
+            setError('Itinerario no encontrado');
             setLoading(false);
           }
         } catch (err) {
-          setError('Error al obtener la receta');
+          setError('Error al obtener el itinerario');
           setLoading(false);
         }
       };
 
-      fetchRecipe();
+      fetchItinerary();
     }
   }, [router.isReady, router.query]);
 
-  const generateRecipe = async (ingredients, id) => {
+  const generateItinerary = async (city, days, id) => {
     try {
-      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/recipegenerator', {
+      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients }),
+        body: JSON.stringify({ city, days }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        setIngredients(data.result);
-        /
+        setItinerary(data.result);
+        // Guardar el resultado en Supabase
         const { error } = await supabase
-          .from('recipes')
+          .from('itineraries')
           .update({ result: data.result })
           .eq('id', id);
 
         if (error) throw error;
       } else {
-        setError(data.error || 'Error al generar la receta');
+        setError(data.error || 'Error al generar el itinerario');
       }
     } catch (err) {
       setError('Error al conectar con el servidor');
@@ -91,45 +93,45 @@ export default function Result() {
     }
   };
 
-  const handleNewRecipe = async (ingredients) => {
-    setNewRecipeLoading(true);
+  const handleNewItinerary = async (city, days) => {
+    setNewItineraryLoading(true);
     try {
-      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/recipegenerator', {
+      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients }),
+        body: JSON.stringify({ city, days }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        
-        const { data: newRecipe, error } = await supabase
-          .from('recipes')
-          .insert({ ingredients, result: data.result })
+        // Crear un nuevo registro en la base de datos
+        const { data: newItinerary, error } = await supabase
+          .from('itineraries')
+          .insert({ city, days, result: data.result })
           .single();
 
         if (error) throw error;
 
-        
-        router.push(`/r/${newRecipe.id}`);
+        // Redirigir a la nueva página de itinerario
+        router.push(`/r/${newItinerary.id}`);
       } else {
-        setError(data.error || 'Error al generar la receta');
+        setError(data.error || 'Error al generar el itinerario');
       }
     } catch (err) {
       setError('Error al conectar con el servidor');
     } finally {
-      setNewRecipeLoading(false);
+      setNewItineraryLoading(false);
     }
   };
 
-  const shareRecipe = async () => {
+  const shareItinerary = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Receta con estos ${ingredients} ingredientes`,
-          text: `¡Mira esta increíble receta con ${ingredients}!`,
+          title: `Itinerario para ${city} - ${days} días`,
+          text: `¡Mira este increíble itinerario para ${city}!`,
           url: window.location.href
         });
       } catch (error) {
@@ -145,15 +147,15 @@ export default function Result() {
   if (notFound) {
     return (
       <div className="container text-center mt-5">
-        <h1 className="display-1 text-warning">404</h1>
+        <h1 className="display-1 text-primary">404</h1>
         <h2 className="display-4 mb-4">¡Oops! Parece que te has perdido en el viaje</h2>
         <p className="lead mb-4">
-          No hemos podido encontrar la receta que buscas. Pero no te preocupes, ¡hay muchas más recetas por explorar!
+          No hemos podido encontrar el itinerario que buscas. Pero no te preocupes, ¡hay muchos más destinos por explorar!
         </p>
         {/* <img src="/lost-traveler.svg" alt="Viajero perdido" className="img-fluid mb-4" style={{maxWidth: '300px'}} /> */}
         <div>
-          <button onClick={() => router.push('/')} className="btn btn-warning btn-lg">
-            Volver a la página principal y probar una nueva receta
+          <button onClick={() => router.push('/')} className="btn btn-primary btn-lg">
+            Volver a la página principal y planear una nueva aventura
           </button>
         </div>
       </div>
@@ -164,30 +166,30 @@ export default function Result() {
     <div className="container">
       {loading ? (
         <div className="text-center mt-5">
-          <div className="spinner-border text-warning" role="status" style={{width: '3rem', height: '3rem'}}>
+          <div className="spinner-border text-primary" role="status" style={{width: '3rem', height: '3rem'}}>
             <span className="visually-hidden">Cargando...</span>
           </div>
-          <p className="mt-3 fs-4 fw-bold text-warning">¡Estamos creando tu receta personalizada!</p>
-          <p className="fs-5">Prepárate para descubrir experiencias únicas en {ingredients}. Esto puede tomar unos momentos...</p>
+          <p className="mt-3 fs-4 fw-bold text-primary">¡Estamos creando tu itinerario personalizado!</p>
+          <p className="fs-5">Prepárate para descubrir experiencias únicas en {city}. Esto puede tomar unos momentos...</p>
         </div>
-      ) : recipe ? (
+      ) : itinerary ? (
         <>
           <div className="bg-white p-4 rounded-3 shadow-custom mb-5">
             <ReactMarkdown className="markdown-content">
-              {recipe}
+              {itinerary}
             </ReactMarkdown>
             <button 
-              onClick={shareRecipe} 
+              onClick={shareItinerary} 
               className="btn btn-generate btn-lg w-100"
             >
-              Compartir Receta 📤
+              Compartir Itinerario 📤
             </button>
           </div>
           
           <section className="container">
             <div className="row justify-content-center">
               <div className="col-md-8">
-                <Cuestionary onSubmit={handleNewRecipe} isLoading={newRecipeLoading} />
+                <Cuestionary onSubmit={handleNewItinerary} isLoading={newItineraryLoading} />
               </div>
             </div>
           </section>

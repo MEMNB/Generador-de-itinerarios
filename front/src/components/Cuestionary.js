@@ -8,15 +8,16 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 export default function Cuestionary({ onSubmit }) {
   const amount = 400;
   const router = useRouter();
-  const [ingredients, setIngredients] = useState([]);
+  const [city, setCity] = useState('');
+  const [days, setDays] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showDiscountCode, setShowDiscountCode] = useState(false);
   const [price, setPrice] = useState(amount);
   const [discountCode, setDiscountCode] = useState('');
   const [discountMessage, setDiscountMessage] = useState('');
-  const [ingredientHint, setIngredientHint] = useState('');
 
+ 
   useEffect(() => {
     const codigoDescuento = router.query.codigo;
     if (codigoDescuento) {
@@ -32,23 +33,20 @@ export default function Cuestionary({ onSubmit }) {
 
     try {
       const stripe = await stripePromise;
-      const base_url = `https://${document.location.host}`
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           city,
           days,
-          redirect_url: base_url,
+          redirect_url: `https://${document.location.host}`,
           discount_code: discountCode
         }),
       });
 
       const session = await response.json();
-
       
-      if (response.ok && session && session.session_id != null) {
-
+      if (response.ok) {
         const result = await stripe.redirectToCheckout({
           sessionId: session.session_id,
         });
@@ -57,22 +55,16 @@ export default function Cuestionary({ onSubmit }) {
           setError(result.error.message);
         }
       } else {
-        if (session.itineraryId) {
-          document.location.href = `${base_url}/r/${session.itineraryId}`
-        } else {
-          setError(session.error || 'Error al procesar el pago');
-        }
-      
+        setError(session.error || 'Error al procesar el pago');
       }
     } catch (err) {
-      console.log({err})
       setError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
     }
 
     if (onSubmit) {
-      onSubmit({ ingredients: ingredients.split(', '), discountCode }); // Asegúrate de pasar los ingredientes como un array
+      onSubmit({ city, days, discountCode });
     }
   };
 
@@ -107,54 +99,50 @@ export default function Cuestionary({ onSubmit }) {
     }
   };
 
-  const handleIngredientChange = (e) => {
-    const value = e.target.value;
-    setIngredients(value.split(',').map(ingredient => ingredient.trim())); // Actualiza el estado como un array
-  };
-
-  const handleIngredientSubmit = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const newIngredient = e.target.value.trim();
-      if (newIngredient) {
-        // Actualiza el estado con los ingredientes separados por comas
-        const updatedIngredients = [...ingredients, newIngredient].join(', ');
-        setIngredients(updatedIngredients.split(',').map(ingredient => ingredient.trim())); // Mantén el estado como un array
-        e.target.value = ''; // Limpia el cuadro de entrada
-        setIngredientHint('');
-      }
-    }
-  };
-
   return (
     <div className="card shadow-custom">
       <div className="card-body p-4">
         <h2 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="ingredients" className="form-label">1. ¿Qué ingredientes tienes en casa? 🌆</label>
+            <label htmlFor="city" className="form-label">1. ¿Qué destino vas a visitar? 🌆</label>
             <div className="input-group">
               <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
               <input
                 type="text"
                 className="form-control"
-                id="ingredients"
-                onKeyDown={handleIngredientSubmit}
-                onChange={handleIngredientChange}
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 required
-                placeholder="Ej: Pollo, Harina, Lentejas..."
+                placeholder="Ej: París, Roma, Tokio..."
               />
             </div>
-             <p className='mt-2'>Asegúrate de separar los ingredientes con comas.</p>
           </div>
-          
+          <div className="mb-3">
+            <label htmlFor="days" className="form-label">2. ¿Cuántos días durará tu viaje? 📅</label>
+            <div className="input-group">
+              <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
+              <input
+                type="number"
+                className="form-control"
+                id="days"
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+                required
+                min="1"
+                max="30"
+                placeholder="Ej: 3, 5, 7..."
+              />
+            </div>
+          </div>
 
           <button
             type="submit"
-            className="btn btn-warning btn-lg w-100 mb-3"
+            className="btn btn-primary btn-lg w-100 mb-3"
             disabled={loading}
           >
-            {loading ? 'Preparando tu ruta... ✈️' : (price < 50 ? '3. ¡Gratis! 💫' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`)}
+            {loading ? 'Preparando tu ruta... ✈️' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`}
           </button>
           
           <div className="mb-1">
@@ -179,7 +167,7 @@ export default function Cuestionary({ onSubmit }) {
                   />
                   <button
                     type="button"
-                    className="btn btn-outline-warning"
+                    className="btn btn-outline-primary"
                     onClick={() => validateDiscountCode(discountCode)}
                   >
                     Validar
@@ -192,15 +180,6 @@ export default function Cuestionary({ onSubmit }) {
                 )}
               </div>
             )}
-          </div>
-
-          <div>
-            <h4>Ingredientes:</h4>
-            <ul>
-              {ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
           </div>
 
         </form>
