@@ -8,9 +8,9 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <title>Ruta de Viaje - Tu Planificador de Viajes</title>
+        <title>?Qué como hoy? - Tu Creador de Recetas</title>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="4982d68d-803f-4eea-997e-94b0c6361fcd"></script>
-        <meta property="description" content="Ruta de Viaje es una plataforma que te permite planificar tus viajes. Genera un itinerario al instante ingresando la ciudad que desees y los días que planeas estar." />
+        <meta property="description" content="¿Qué como hoy? es una plataforma que te permite generar recetas al instante con los ingredientes que tengas disponible." />
         <meta property="og:image" content="Link preview image URL"></meta>
       </Head>
       <Component {...pageProps} />
