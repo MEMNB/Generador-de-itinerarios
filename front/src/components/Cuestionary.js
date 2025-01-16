@@ -33,20 +33,23 @@ export default function Cuestionary({ onSubmit }) {
 
     try {
       const stripe = await stripePromise;
+      const base_url = `https://${document.location.host}`
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           city,
           days,
-          redirect_url: `https://${document.location.host}`,
+          redirect_url: base_url,
           discount_code: discountCode
         }),
       });
 
       const session = await response.json();
+
       
-      if (response.ok) {
+      if (response.ok && session && session.session_id != null) {
+
         const result = await stripe.redirectToCheckout({
           sessionId: session.session_id,
         });
@@ -55,9 +58,15 @@ export default function Cuestionary({ onSubmit }) {
           setError(result.error.message);
         }
       } else {
-        setError(session.error || 'Error al procesar el pago');
+        if (session.itineraryId) {
+          document.location.href = `${base_url}/r/${session.itineraryId}`
+        } else {
+          setError(session.error || 'Error al procesar el pago');
+        }
+      
       }
     } catch (err) {
+      console.log({err})
       setError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
@@ -142,7 +151,7 @@ export default function Cuestionary({ onSubmit }) {
             className="btn btn-primary btn-lg w-100 mb-3"
             disabled={loading}
           >
-            {loading ? 'Preparando tu ruta... ✈️' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`}
+            {loading ? 'Preparando tu ruta... ✈️' : (price < 50 ? '3. ¡Gratis! 💫' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`)}
           </button>
           
           <div className="mb-1">
