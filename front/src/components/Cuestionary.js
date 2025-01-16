@@ -148,10 +148,10 @@ export default function Cuestionary({ onSubmit }) {
 
           <button
             type="submit"
-            className="btn btn-primary btn-lg w-100 mb-3"
+            className="btn btn-success btn-lg w-100 mb-3"
             disabled={loading}
           >
-            {loading ? 'Preparando tu ruta... ✈️' : (price < 50 ? '3. ¡Gratis! 💫' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`)}
+            {loading ? 'Preparando tu ruta... ✈️' : (price < 50 ? '3. ¡Generar mi itinerario Gratis! 💫' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`)}
           </button>
           
           <div className="mb-1">
