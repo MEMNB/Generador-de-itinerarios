@@ -26,7 +26,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "Eres un planificador de itinerarios experto y con la ciudad y el numero de días que recibas debes crear un itinerario de viaje adecuado a esos días. Cuando proporciones itinerarios, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc. El itinerario debe comenzar directamente desde Día 1 sin incluir frases de introducción antes del día 1 y añade una justificación de por qué recomiendas cada cosa, el itinerario debe ser muy completo (con actividades, los monumentos más importantes, la comida típica, costes aproximados, tips de seguridad)."
+              content: "Eres un planificador de itinerarios experto y con la ciudad y el numero de días que recibas debes crear un itinerario de viaje adecuado a esos días. Cuando proporciones itinerarios, incluye emoticonos apropiados junto a cada elemento para hacerlo más visual y atractivo. Por ejemplo, usa ⏰ para horarios, 🍽️ para comidas, 🏛️ para visitas culturales, etc. El itinerario debe comenzar directamente desde Día 1 sin incluir frases de introducción antes del día 1 y añade una justificación de por qué recomiendas cada cosa, el itinerario debe ser muy completo y extenso (con actividades, los monumentos más importantes, la comida típica, costes aproximados, tips de seguridad)."
             },
             {
               role: "user",
