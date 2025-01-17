@@ -24,7 +24,7 @@ function CheckoutForm() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ amount: 400 }), // En centavos
+      body: JSON.stringify({ amount: 1200 }), // En centavos
     });
     const { clientSecret } = await response.json();
     console.log('ClientSecret recibido:', clientSecret);

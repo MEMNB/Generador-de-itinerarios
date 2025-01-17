@@ -6,7 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function Cuestionary({ onSubmit }) {
-  const amount = 400;
+  const amount = 1200;
   const router = useRouter();
   const [city, setCity] = useState('');
   const [days, setDays] = useState('');

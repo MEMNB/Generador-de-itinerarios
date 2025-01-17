@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   try {
     const { city, days, redirect_url, discount_code } = req.body;
     console.log('Datos recibidos:', req.body);
-    const amount = 400;
+    const amount = 1200;
 
     const itineraryId = uuidv4();
 
