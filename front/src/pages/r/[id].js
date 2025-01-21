@@ -175,8 +175,13 @@ export default function Result() {
         </div>
       ) : itinerary ? (
         <>
-          <h1 className='mt-2'>{itinerary.title}</h1>
+          <h1 className='mt-2'>
+          <ReactMarkdown className="markdown-content">
+            {itinerary.title}
+          </ReactMarkdown>
+          </h1>
 
+          <h2>Descripción</h2>
           <ReactMarkdown className="markdown-content">
             {itinerary.description}
           </ReactMarkdown>
@@ -196,15 +201,16 @@ export default function Result() {
             {itinerary.typicalFoods}
           </ReactMarkdown>
 
-          <button onClick={shareItinerary} className="btn btn-generate btn-lg w-100">
+         <div className="d-flex justify-content-center mt-3">
+          <button  onClick={shareItinerary} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
             Compartir Itinerario 📤
           </button>
-
+         </div>
         
           
           <section className="container">
             <div className="row justify-content-center">
-              <div className="col-md-8">
+              <div className="col-md-8 mt-3">
                 <Cuestionary onSubmit={handleNewItinerary} isLoading={newItineraryLoading} />
               </div>
             </div>
