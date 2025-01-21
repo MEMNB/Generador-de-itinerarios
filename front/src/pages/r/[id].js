@@ -43,7 +43,7 @@ export default function Result() {
             setDays(data.days);
 
             if (data.result) {
-              setItinerary(data.result);
+              setItinerary(JSON.parse(data.result));
               setLoading(false);
             } else {
               // Si no hay resultado, generar el itinerario
@@ -65,7 +65,8 @@ export default function Result() {
 
   const generateItinerary = async (city, days, id) => {
     try {
-      const response = await fetch('https://tjbqkrgjisrjfrltdnpm.supabase.co/functions/v1/itinerarygenerator', {
+      const functionUrl = process.env.NEXT_PUBLIC_SUPABASE_URL + "/functions/v1/itinerarygenerator"
+      const response = await fetch(functionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +164,7 @@ export default function Result() {
   }
 
   return (
-    <div className="container">
+    <div className="container py-2">
       {loading ? (
         <div className="text-center mt-5">
           <div className="spinner-border text-primary" role="status" style={{width: '3rem', height: '3rem'}}>
@@ -174,17 +175,32 @@ export default function Result() {
         </div>
       ) : itinerary ? (
         <>
-          <div className="bg-white p-4 rounded-3 shadow-custom mb-5">
-            <ReactMarkdown className="markdown-content">
-              {itinerary}
-            </ReactMarkdown>
-            <button 
-              onClick={shareItinerary} 
-              className="btn btn-generate btn-lg w-100"
-            >
-              Compartir Itinerario 📤
-            </button>
-          </div>
+          <h1 className='mt-2'>{itinerary.title}</h1>
+
+          <ReactMarkdown className="markdown-content">
+            {itinerary.description}
+          </ReactMarkdown>
+
+          <h2>Itinerario</h2>
+          <ReactMarkdown className="markdown-content">
+            {itinerary.itinerary}
+          </ReactMarkdown>
+
+          <h2>Recomendaciones Turísticas</h2>
+          <ReactMarkdown className="markdown-content">
+            {itinerary.touristRecommendations}
+          </ReactMarkdown>
+
+          <h2>Comidas Típicas</h2>
+          <ReactMarkdown className="markdown-content">
+            {itinerary.typicalFoods}
+          </ReactMarkdown>
+
+          <button onClick={shareItinerary} className="btn btn-generate btn-lg w-100">
+            Compartir Itinerario 📤
+          </button>
+
+        
           
           <section className="container">
             <div className="row justify-content-center">
@@ -198,7 +214,7 @@ export default function Result() {
             <button onClick={() => router.push('/')} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
               Volver a la página principal
             </button>
-          </div>
+         </div>
         </>
       ) : (
         <p className="alert alert-danger mt-3">{error}</p>
