@@ -49,7 +49,7 @@ serve(async (req) => {
         generateSection(`Genera un título para un itinerario en ${city} por ${days} días.`),
         generateSection(`Proporciona una breve descripción sobre cómo es ${city}`),
         generateSection(`Crea un itinerario detallado para ${city} durante ${days} días.`),
-        generateSection(`Ofrece consejos útiles para un viaje en ${city}, como transporte, clima y seguridad. Incluyendo actividades menos conocidas.`),
+        generateSection(`Ofrece consejos útiles en ${city}, como transporte, clima y seguridad. Incluyendo actividades menos conocidas.`),
         generateSection(`¿Cuáles son las comidas típicas de ${city}? y sugiere lugares populares donde probarlas.`)
       ]);
       const result = {

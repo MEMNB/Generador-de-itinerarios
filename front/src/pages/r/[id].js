@@ -12,11 +12,11 @@ export default function Result() {
   const router = useRouter();
   const [itinerary, setItinerary] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true); // Cambiado a true inicialmente
+  const [loading, setLoading] = useState(true); 
   const [city, setCity] = useState('');
   const [days, setDays] = useState('');
   const [notFound, setNotFound] = useState(false);
-  const [isReady, setIsReady] = useState(false); // Nuevo estado
+  const [isReady, setIsReady] = useState(false); 
   const [newItineraryLoading, setNewItineraryLoading] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Result() {
       const fetchItinerary = async () => {
         setLoading(true);
         try {
-          // Buscar el itinerario en Supabase
+          
           const { data, error } = await supabase
             .from('itineraries')
             .select('*')
@@ -46,7 +46,7 @@ export default function Result() {
               setItinerary(JSON.parse(data.result));
               setLoading(false);
             } else {
-              // Si no hay resultado, generar el itinerario
+              
               await generateItinerary(data.city, data.days, id);
             }
           } else {
@@ -77,7 +77,7 @@ export default function Result() {
       const data = await response.json();
       if (response.ok) {
         setItinerary(data.result);
-        // Guardar el resultado en Supabase
+        
         const { error } = await supabase
           .from('itineraries')
           .update({ result: data.result })
@@ -107,7 +107,7 @@ export default function Result() {
 
       const data = await response.json();
       if (response.ok) {
-        // Crear un nuevo registro en la base de datos
+        
         const { data: newItinerary, error } = await supabase
           .from('itineraries')
           .insert({ city, days, result: data.result })
@@ -115,7 +115,7 @@ export default function Result() {
 
         if (error) throw error;
 
-        // Redirigir a la nueva página de itinerario
+        
         router.push(`/r/${newItinerary.id}`);
       } else {
         setError(data.error || 'Error al generar el itinerario');
@@ -143,7 +143,7 @@ export default function Result() {
     }
   };
 
-  if (!isReady) return null; // No renderizar nada hasta que el router esté listo
+  if (!isReady) return null; 
 
   if (notFound) {
     return (
