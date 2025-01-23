@@ -71,16 +71,16 @@ export default function Home() {
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          padding: '5px',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#ffffff',
+          border: '1px solid #007bff',
+          borderRadius: '8px',
+          padding: '10px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
           zIndex: 1000,
-          width: '200px', // Ajusta el ancho del cuadro
+          width: '250px', // Ajusta el ancho del cuadro
         }}>
-          <p style={{ margin: 0, fontSize: '12px' }}>Este sitio utiliza cookies para mejorar la experiencia del usuario.</p>
-          <p style={{ margin: 0, fontSize: '12px' }}>Al continuar navegando, aceptas el uso de cookies.</p>
+          <p style={{ margin: 0, fontSize: '14px', color: '#333' }}>Este sitio utiliza cookies para mejorar la experiencia del usuario.</p>
+          <p style={{ margin: 0, fontSize: '14px', color: '#333' }}>Al continuar navegando, aceptas el uso de cookies.</p>
         </div>
       )}
 
@@ -108,6 +108,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+
       </main>
     </div>
   );
