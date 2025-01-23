@@ -175,6 +175,7 @@ export default function Result() {
         </div>
       ) : itinerary ? (
         <>
+        <section className="container bg-white shadow-custom rounded">
           <h1 className='mt-2'>
           <ReactMarkdown className="markdown-content">
             {itinerary.title}
@@ -200,6 +201,7 @@ export default function Result() {
           <ReactMarkdown className="markdown-content">
             {itinerary.typicalFoods}
           </ReactMarkdown>
+        </section>
 
          <div className="d-flex justify-content-center mt-3">
           <button  onClick={shareItinerary} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
