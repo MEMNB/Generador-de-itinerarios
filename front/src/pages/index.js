@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Cuestionary from '../components/Cuestionary';
+import FAQ from '../components/FAQ';
 
 export default function Home() {
   const router = useRouter();
@@ -110,6 +111,15 @@ export default function Home() {
         </section>
 
       </main>
+
+      <section className="container">
+          <div className="row justify-content-center">
+            <div className="col-md-8">
+              <FAQ />
+            </div>
+          </div>
+        </section>
+      
     </div>
   );
 }
