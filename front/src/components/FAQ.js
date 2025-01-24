@@ -6,12 +6,12 @@ const FAQ = () => {
         <h2 className="card-title text-dark text-center mb-4">Preguntas Frecuentes</h2>
         
         <div className="faq-item mb-3">
-          <h3>¿Qué es Ruta de viaje?</h3>
+          <h3 className="mb-1">¿Qué es Ruta de viaje?</h3>
           <p>Ruta de Viaje es una herramienta en línea que te ayuda a planificar tu itinerario de viaje en cuestión de minutos. Solo necesitas ingresar el destino que quieres visitar y los días que estarás allí, y nosotros generamos un plan personalizado con actividades, lugares destacados y recomendaciones para aprovechar al máximo tu tiempo.</p>
         </div>
 
         <div className="faq-item mb-3">
-          <h3>¿Cómo se usa Ruta de viaje?</h3>
+          <h3 className="mb-1">¿Cómo se usa Ruta de viaje?</h3>
           <p>Es muy fácil: </p>
           <ul>
 
@@ -23,7 +23,7 @@ const FAQ = () => {
         </div>
 
         <div className="faq-item mb-3">
-          <h3>¿Cómo obtener un código promocional?</h3>
+          <h3 className="mb-1">¿Cómo obtener un código promocional?</h3>
           <p>Puedes conseguir códigos promocionales de varias formas: </p>
           <ul>
           <li><strong>Canal de YouTube:</strong> Síguenos en nuestro canal(Mood de viaje), donde compartimos contenido exclusivo sobre viajes y promociones especiales. </li>
