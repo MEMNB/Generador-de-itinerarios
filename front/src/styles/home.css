@@ -1,5 +1,5 @@
 body {
-    background-color: #cce5ff;
+    background-color: #e9ecef;
     margin: 0;
     font-family: 'Poppins', sans-serif;
   }
@@ -10,16 +10,17 @@ body {
   }
   
   .custom-header {
-    background-color: #0279f9;
-    padding: 2rem 0;
+    background-color: #007bff;
+    padding: 3rem 0;
     text-align: center;
+    border-bottom: 4px solid #0056b3;
   }
   
   .travel-plan-title {
-    font-size: 4rem;
-    color: #f3f2f2;
+    font-size: 4.5rem;
+    color: #ffffff;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
   }
   
   .travel-plan-p {
@@ -28,7 +29,7 @@ body {
   }
   
   .shadow-custom {
-    box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.424) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
   }
   
   .img-fluid {
@@ -62,3 +63,10 @@ body {
   .markdown-content {
     line-height: 1.6;
   }
+  
+  .card {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  

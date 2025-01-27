@@ -113,7 +113,7 @@ export default function Cuestionary({ onSubmit }) {
       <div className="card-body p-4">
         <h2 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+          <div className="mb-4">
             <label htmlFor="city" className="form-label">1. ¿Qué destino vas a visitar? 🌆</label>
             <div className="input-group">
               <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
@@ -125,10 +125,11 @@ export default function Cuestionary({ onSubmit }) {
                 onChange={(e) => setCity(e.target.value)}
                 required
                 placeholder="Ej: París, Roma, Tokio..."
+                style={{ borderRadius: '10px' }}
               />
             </div>
           </div>
-          <div className="mb-3">
+          <div className="mb-4">
             <label htmlFor="days" className="form-label">2. ¿Cuántos días durará tu viaje? 📅</label>
             <div className="input-group">
               <span className="input-group-text"><i className="bi bi-calendar-event"></i></span>
@@ -142,6 +143,7 @@ export default function Cuestionary({ onSubmit }) {
                 min="1"
                 max="30"
                 placeholder="Ej: 3, 5, 7..."
+                style={{ borderRadius: '10px' }}
               />
             </div>
           </div>
@@ -150,6 +152,7 @@ export default function Cuestionary({ onSubmit }) {
             type="submit"
             className="btn btn-success btn-lg w-100 mb-3"
             disabled={loading}
+            style={{ borderRadius: '10px' }}
           >
             {loading ? 'Preparando tu ruta... ✈️' : (price < 50 ? '3. ¡Generar mi itinerario Gratis! 💫' : `3. ¡Generar mi itinerario por ${price / 100}€! 💫`)}
           </button>

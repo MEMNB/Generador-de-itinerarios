@@ -175,41 +175,42 @@ export default function Result() {
         </div>
       ) : itinerary ? (
         <>
-        <section className="container bg-white shadow-custom rounded">
-          <h1 className='mt-2'>
-          <ReactMarkdown className="markdown-content">
-            {itinerary.title}
-          </ReactMarkdown>
-          </h1>
+          <div className="card shadow-custom">
+            <div className="card-body p-4">
+              <h1 className='mt-2'>
+                <ReactMarkdown className="markdown-content">
+                  {itinerary.title.replace(/['"]/g, '')}
+                </ReactMarkdown>
+              </h1>
 
-          <h2>Descripción</h2>
-          <ReactMarkdown className="markdown-content">
-            {itinerary.description}
-          </ReactMarkdown>
+              <h2>Descripción</h2>
+              <ReactMarkdown className="markdown-content">
+                {itinerary.description}
+              </ReactMarkdown>
 
-          <h2>Itinerario</h2>
-          <ReactMarkdown className="markdown-content">
-            {itinerary.itinerary}
-          </ReactMarkdown>
+              <h2>Itinerario</h2>
+              <ReactMarkdown className="markdown-content">
+                {itinerary.itinerary}
+              </ReactMarkdown>
 
-          <h2>Recomendaciones Turísticas</h2>
-          <ReactMarkdown className="markdown-content">
-            {itinerary.touristRecommendations}
-          </ReactMarkdown>
+              <h2>Recomendaciones Turísticas</h2>
+              <ReactMarkdown className="markdown-content">
+                {itinerary.touristRecommendations}
+              </ReactMarkdown>
 
-          <h2>Comidas Típicas</h2>
-          <ReactMarkdown className="markdown-content">
-            {itinerary.typicalFoods}
-          </ReactMarkdown>
-        </section>
+              <h2>Comidas Típicas</h2>
+              <ReactMarkdown className="markdown-content">
+                {itinerary.typicalFoods}
+              </ReactMarkdown>
+            </div>
+          </div>
 
-         <div className="d-flex justify-content-center mt-3">
-          <button  onClick={shareItinerary} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
-            Compartir Itinerario 📤
-          </button>
-         </div>
-        
-          
+          <div className="d-flex justify-content-center mt-3">
+            <button onClick={shareItinerary} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
+              Compartir Itinerario 📤
+            </button>
+          </div>
+
           <section className="container">
             <div className="row justify-content-center">
               <div className="col-md-8 mt-3">
@@ -222,7 +223,7 @@ export default function Result() {
             <button onClick={() => router.push('/')} className="btn btn-generate fw-bold mt-2 mb-3 btn-lg rounded">
               Volver a la página principal
             </button>
-         </div>
+          </div>
         </>
       ) : (
         <p className="alert alert-danger mt-3">{error}</p>

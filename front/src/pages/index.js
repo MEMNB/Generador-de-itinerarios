@@ -94,10 +94,12 @@ export default function Home() {
       <main className="py-3">
         {itinerary && (
           <section className="container mb-5">
-            <div className="bg-white p-4 rounded-3 shadow-custom">
-              <ReactMarkdown className="markdown-content">
-                {itinerary}
-              </ReactMarkdown>
+            <div className="card shadow-custom">
+              <div className="card-body p-4">
+                <ReactMarkdown className="markdown-content">
+                  {itinerary}
+                </ReactMarkdown>
+              </div>
             </div>
           </section>
         )}
