@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Cuestionary from '../components/Cuestionary';
 import FAQ from '../components/FAQ';
+import PopularDestination from '../components/PopularDestination';
 
 export default function Home() {
   const router = useRouter();
@@ -85,11 +86,21 @@ export default function Home() {
         </div>
       )}
 
+        <div className="relative bg-slate-800 py-12 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80" 
+            alt="World Map"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
       <header className="custom-header">
         <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️Ruta de Viaje</h1>
         <h3 className='travel-plan-p'>Crea tu ruta de viaje en un instante:</h3>
         <h3 className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta de viaje</h3>
       </header>
+      </div>
 
       <main className="py-3">
         {itinerary && (
@@ -106,13 +117,15 @@ export default function Home() {
 
         <section className="container">
           <div className="row justify-content-center">
-            <div className="col-md-8">
+            <div className="col-md-8" style={{ marginBottom: '20px' }}>
               <Cuestionary />
             </div>
           </div>
         </section>
 
       </main>
+
+      <PopularDestination />
 
       <section className="container">
           <div className="row justify-content-center">

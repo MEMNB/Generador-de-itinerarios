@@ -111,7 +111,7 @@ export default function Cuestionary({ onSubmit }) {
   return (
     <div className="card shadow-custom">
       <div className="card-body p-4">
-        <h2 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje</h2>
+        <h1 className="card-title text-dark text-center mb-4">Crea tu ruta de viaje</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="city" className="form-label">1. ¿Qué destino vas a visitar? 🌆</label>

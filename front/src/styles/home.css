@@ -10,10 +10,10 @@ body {
   }
   
   .custom-header {
-    background-color: #007bff;
+    
     padding: 3rem 0;
     text-align: center;
-    border-bottom: 4px solid #0056b3;
+    
   }
   
   .travel-plan-title {
@@ -69,4 +69,55 @@ body {
     overflow: hidden;
   }
 
+  .popular-destinations {
+    display: grid; /* Asegúrate de que sea un grid */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ajusta el tamaño de las columnas */
+    gap: 1.5rem; /* Espacio entre las tarjetas */
+  }
+
+  .destination-card {
+    background-color: #ffffff; /* Fondo blanco para las tarjetas */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    overflow: hidden; /* Para que la imagen no sobresalga */
+    text-align: center; /* Centrar el texto */
+    padding: 1rem; /* Espaciado interno */
+    max-width: 300px; /* Ancho máximo para las tarjetas */
+    margin: auto; /* Centrar la tarjeta en su contenedor */
+  }
+
+  .destination-card img {
+    width: 100%; /* Imagen ocupa todo el ancho de la tarjeta */
+    height: 200px; /* Altura fija para la imagen */
+    object-fit: cover; /* Mantener la proporción de la imagen y cubrir el área */
+  }
+
+  .destination-card h3 {
+    margin: 0.5rem 0; /* Espaciado superior e inferior */
+    font-size: 1.5rem; /* Tamaño de fuente para el título */
+  }
+
+  .destination-card p {
+    margin: 0.25rem 0; /* Espaciado para los párrafos */
+    color: #6c757d; /* Color gris para el texto */
+  }
+  
+  .faq-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .faq-item.active {
+    background-color: #f0f0f0; /* Color de fondo cuando está activo */
+  }
+
+  .faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-content.show {
+    max-height: 200px; /* Ajusta según el contenido */
+  }
   
