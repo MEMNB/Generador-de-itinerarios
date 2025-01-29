@@ -121,3 +121,13 @@ body {
     max-height: 200px; /* Ajusta según el contenido */
   }
   
+  .faq-item button {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: transform 0.2s; /* Transición para el efecto hover */
+  }
+
+  .faq-item button:hover {
+    transform: translateY(-2px); /* Efecto de elevación al pasar el mouse */
+  }
+  

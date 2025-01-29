@@ -61,7 +61,7 @@ const PopularDestinations = () => (
     <div className="mb-12">
         <div className="flex justify-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800 ml-4 mr-2">
-                Destinos Populares
+                Iitnerarios de Destinos Populares para probar
             </h2>
         </div>
         <div className="flex justify-center">

@@ -99,7 +99,9 @@ export default function Home() {
         <h1 className="travel-plan-title" style={{ fontWeight: 700 }}>🗺️Ruta de Viaje</h1>
         <h3 className='travel-plan-p'>Crea tu ruta de viaje en un instante:</h3>
         <h3 className='travel-plan-p'> Ciudad + Días + Generar = Tu ruta de viaje</h3>
+        
       </header>
+      
       </div>
 
       <main className="py-3">
@@ -115,13 +117,13 @@ export default function Home() {
           </section>
         )}
 
-        <section className="container">
+        <section className="container" style={{ marginTop: '-50px' }}>
           <div className="row justify-content-center">
             <div className="col-md-8" style={{ marginBottom: '20px' }}>
-              <Cuestionary />
+             <Cuestionary />
             </div>
           </div>
-        </section>
+       </section>
 
       </main>
 
